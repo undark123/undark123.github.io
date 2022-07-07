@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>白板推导-L03 | Sunshine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="线性回归假设数据集为：$$\mathcal{D}&#x3D;{(x_1, y_1),(x_2, y_2),\cdots,(x_N, y_N)}$$其中：$$x_i\in\mathbb{R^p},y_i\in\mathbb{R}, i&#x3D;1,2…N$$ 后面我们记：$$X&#x3D;(x_1,x_2,\cdots,x_N)^T_{N\times P},Y&#x3D;(y_1,y_2,\cdo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="白板推导-L03">
+<meta property="og:url" content="https://undark.gitee.io/posts/6d219808.html">
+<meta property="og:site_name" content="Sunshine">
+<meta property="og:description" content="线性回归假设数据集为：$$\mathcal{D}&#x3D;{(x_1, y_1),(x_2, y_2),\cdots,(x_N, y_N)}$$其中：$$x_i\in\mathbb{R^p},y_i\in\mathbb{R}, i&#x3D;1,2…N$$ 后面我们记：$$X&#x3D;(x_1,x_2,\cdots,x_N)^T_{N\times P},Y&#x3D;(y_1,y_2,\cdo">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-06-28T09:41:18.000Z">
+<meta property="article:modified_time" content="2022-06-30T06:20:26.902Z">
+<meta property="article:author" content="undark">
+<meta property="article:tag" content="白板推导系列">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="../atom.xml" title="Sunshine" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="../favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="../css/style.css">
+
+  
+    
+<link rel="stylesheet" href="../fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="../index.html" id="logo">Sunshine</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="../index.html" id="subtitle">Sunshine-616</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="../index.html">Home</a>
+        
+          <a class="main-nav-link" href="../archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="../atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://undark.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-白板推导-L03" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time class="dt-published" datetime="2022-06-28T09:41:18.000Z" itemprop="datePublished">2022-06-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="../categories/ML/">ML</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      白板推导-L03
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h1><p>假设数据集为：<br>$$<br>\mathcal{D}&#x3D;{(x_1, y_1),(x_2, y_2),\cdots,(x_N, y_N)}<br>$$<br>其中：<br>$$<br>x_i\in\mathbb{R^p},y_i\in\mathbb{R}, i&#x3D;1,2…N<br>$$</p>
+<p>后面我们记：<br>$$<br>X&#x3D;(x_1,x_2,\cdots,x_N)^T_{N\times P},Y&#x3D;(y_1,y_2,\cdots,y_N)^T_{N\times1}<br>$$<br>线性回归假设：<br>$$<br>f(w)&#x3D;w^Tx(w\in\mathbb{R^p},x\in\mathbb{R^p})<br>$$</p>
+<h2 id="最小二乘法"><a href="#最小二乘法" class="headerlink" title="最小二乘法"></a>最小二乘法</h2><p>对这个问题，采用<strong>二范数定义</strong>的平方误差来定义损失函数：<br>$$<br>L(w)&#x3D;\sum\limits_{i&#x3D;1}^N||w^Tx_i-y_i||^2_2<br>$$<br>展开得到：<br>$$<br>\begin{align}<br>L(w)&amp;&#x3D;(w^Tx_1-y_1,\cdots,w^Tx_N-y_N)\cdot (w^Tx_1-y_1,\cdots,w^Tx_N-y_N)^T\nonumber\<br>&amp;&#x3D;(w^TX^T-Y^T)\cdot (Xw-Y)&#x3D;w^TX^TXw-Y^TXw-w^TX^TY+Y^TY\nonumber\<br>&amp;&#x3D;w^TX^TXw-2w^TX^TY+Y^TY<br>\end{align}<br>$$<br>最小化这个值的 $ \hat{w}$ ：<br>$$<br>\begin{align}<br>\hat{w}&#x3D;\mathop{argmin}\limits_wL(w)&amp;\longrightarrow\frac{\partial}{\partial w}L(w)&#x3D;0\nonumber\<br>&amp;\longrightarrow2X^TX\hat{w}-2X^TY&#x3D;0\nonumber\<br>&amp;\longrightarrow \hat{w}&#x3D;(X^TX)^{-1}X^TY&#x3D;X^+Y<br>\end{align}<br>$$</p>
+<blockquote>
+<p>这个式子中 $(X^TX)^{-1}X^T$ 又被称为<strong>伪逆</strong>。</p>
+<p>对于行满秩或者列满秩的 $X$，可以直接求解，但是对于非满秩的样本集合，需要使用奇异值分解（SVD）的方法，对 $X$ 求奇异值分解，得到<br>$$<br>X&#x3D;U\Sigma V^T<br>$$<br>于是：<br>$$<br>X^+&#x3D;V\Sigma^{-1}U^T<br>$$</p>
+</blockquote>
+<h2 id="最小二乘法的两种几何理解"><a href="#最小二乘法的两种几何理解" class="headerlink" title="最小二乘法的两种几何理解"></a>最小二乘法的两种几何理解</h2><h3 id="1、n个样本点上误差的平方和"><a href="#1、n个样本点上误差的平方和" class="headerlink" title="1、n个样本点上误差的平方和"></a>1、n个样本点上误差的平方和</h3><ul>
+<li>最小二乘法所应用的二范数本质上就是每个样本点上的误差的平方，各个样本点上误差的平方和最小化就是最小二乘法。</li>
+</ul>
+<h3 id="2、从P维子空间上几何距离"><a href="#2、从P维子空间上几何距离" class="headerlink" title="2、从P维子空间上几何距离"></a>2、从P维子空间上几何距离</h3><ul>
+<li><p>首先应该明白一个东西：$N$维空间中$P$个向量（$P&lt;N$）可以构成一个$P$维子空间。</p>
+<blockquote>
+<p>比如：两点构成一条直线（两点是二维平面中的点，这两个点构成一个二维空间）</p>
+</blockquote>
+</li>
+<li><p>之后进行分析：</p>
+<ul>
+<li>$X\in \mathbb{R}^{n\times p},Y\in\mathbb{R}^{n\times 1}$,若要实现最优解即为通过$X$求得一个$\hat{Y}$使得$\hat{Y}和Y$距离最近。</li>
+<li>因而不妨设$\hat{Y}&#x3D;X·\beta ,\beta\in\mathbb{R}^{n\times 1}$</li>
+<li>将$X$按列分为$p$个$n$维列向量，则这$p$个列向量可以构成一个$p$维子空间$\mathbb{P}$（$p&lt;n$条件下才成立），并且此时这个$p$维空间内包含了一个$\hat{Y}$</li>
+<li>紧接着就是找到$Y和\hat{Y}$最接近的$\beta$值：即当$\hat{Y}为Y$在$\mathbb{P}$上的投影时，满足距离最小的条件</li>
+<li>由投影的相关性质可以得到$(Y-\hat{Y})\perp \mathbb{P}$，亦即$(Y-\hat{Y})\perp x_i,i&#x3D;1,2…n$ </li>
+<li>因而可得到：$X^T(Y-X\beta)&#x3D;0_{n\times 1}$</li>
+<li>最后：$X^T\cdot(Y-X\beta)&#x3D;0\longrightarrow\beta&#x3D;(X^TX)^{-1}X^TY$</li>
+</ul>
+</li>
+</ul>
+<h2 id="概率角度的最小二乘法"><a href="#概率角度的最小二乘法" class="headerlink" title="概率角度的最小二乘法"></a>概率角度的最小二乘法</h2><ul>
+<li>噪声为高斯分布的 MLE</li>
+</ul>
+<p>对于一维的情况，记 $y&#x3D;w^Tx+\epsilon,\epsilon\sim\mathcal{N}(0,\sigma^2)$，那么 $y\sim\mathcal{N}(w^Tx,\sigma^2)$。代入极大似然估计中：<br>$$<br>\begin{align}<br>\mathfrak{L}(w)&#x3D;\log p(Y|X,w)&amp;&#x3D;\log\prod\limits_{i&#x3D;1}^Np(y_i|x_i,w)\nonumber\<br>&amp;&#x3D;\sum\limits_{i&#x3D;1}^N\log(\frac{1}{\sqrt{2\pi\sigma}}e^{-\frac{(y_i-w^Tx_i)^2}{2\sigma^2}})\<br>\mathop{argmax}\limits_wL(w)&amp;&#x3D;\mathop{argmin}\limits_w\sum\limits_{i&#x3D;1^N}(y_i-w^Tx_i)^2<br>\end{align}<br>$$<br>这个表达式和最小二乘估计得到的结果一样。</p>
+<p>因此可以得到：</p>
+<p>$MSE\Leftrightarrow MLE\ \ when\ noise\ is \ Gaussian \ distribution$</p>
+<h2 id="权重先验也为高斯分布的-MAP"><a href="#权重先验也为高斯分布的-MAP" class="headerlink" title="权重先验也为高斯分布的 MAP"></a>权重先验也为高斯分布的 MAP</h2><p>取先验分布 $w\sim\mathcal{N}(0,\sigma_0^2)$。于是： <br>$$<br>\begin{align}<br>\hat{w}&#x3D;\mathop{argmax}\limits_wp(w|Y)&amp;&#x3D;\mathop{argmax}\limits_wp(Y|w)p(w)\nonumber\<br>&amp;&#x3D;\mathop{argmax}\limits_w\log p(Y|w)p(w)\nonumber\<br>&amp;&#x3D;\mathop{argmax}\limits_w(\log p(Y|w)+\log p(w))\nonumber\<br>&amp;&#x3D;\mathop{argmin}\limits_w[(y-w^Tx)^2+\frac{\sigma^2}{\sigma_0^2}w^Tw]<br>\end{align}<br>$$<br>这里省略了 $X$，$p(Y)$和 $w$ 没有关系，同时也利用了上面高斯分布的 MLE的结果。</p>
+<p>我们将会看到，超参数 $\sigma_0$的存在和下面会介绍的 Ridge 正则项可以对应，同样的如果将先验分布取为 Laplace 分布，那么就会得到和 L1 正则类似的结果。</p>
+<h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><p>在实际应用时，如果样本容量不远远大于样本的特征维度即$N&gt;&gt;P$不能满足，很可能造成过拟合，对这种情况，我们有下面三个解决方式：</p>
+<ol>
+<li>加数据</li>
+<li>特征选择（降低特征维度）如 $PCA $算法。</li>
+<li>正则化</li>
+</ol>
+<p>正则化一般是在损失函数（如上面介绍的最小二乘损失）上加入正则化项（表示模型的复杂度对模型的惩罚），下面我们介绍一般情况下的两种正则化框架。<br>$$<br>\begin{align}<br>L1&amp;:\mathop{argmin}\limits_wL(w)+\lambda||w||_1,\lambda\gt0\<br>L2&amp;:\mathop{argmin}\limits_wL(w)+\lambda||w||^2_2,\lambda \gt 0<br>\end{align}<br>$$<br>下面对最小二乘误差分别分析这两者的区别。</p>
+<h3 id="L1-Lasso"><a href="#L1-Lasso" class="headerlink" title="L1 Lasso"></a>L1 Lasso</h3><p>L1正则化可以引起稀疏解。</p>
+<p>从最小化损失的角度看，由于 L1 项求导在0附近的左右导数都不是0，因此更容易取到0解。</p>
+<p>从另一个方面看，L1 正则化相当于：<br>$$<br>\mathop{argmin}\limits_wL(w)\<br>s.t. ||w||_1\lt C<br>$$<br>我们已经看到平方误差损失函数在 $w$ 空间是一个椭球，因此上式求解就是椭球和 $||w||_1&#x3D;C$的切点，因此更容易相切在坐标轴上。</p>
+<h3 id="L2-Ridge（岭回归）"><a href="#L2-Ridge（岭回归）" class="headerlink" title="L2 Ridge（岭回归）"></a>L2 Ridge（岭回归）</h3><p>$$<br>\begin{align}<br>\hat{w}&#x3D;\mathop{argmin}\limits_wL(w)+\lambda w^Tw&amp;\longrightarrow\frac{\partial}{\partial w}L(w)+2\lambda w&#x3D;0\nonumber\<br>&amp;\longrightarrow2X^TX\hat{w}-2X^TY+2\lambda \hat w&#x3D;0\nonumber\<br>&amp;\longrightarrow \hat{w}&#x3D;(X^TX+\lambda \mathbb{I})^{-1}X^TY<br>\end{align}<br>$$</p>
+<p>可以看到，这个正则化参数和前面的 MAP 结果不谋而合。利用2范数进行正则化不仅可以是模型选择 $w$ 较小的参数，同时也避免 $ X^TX$不可逆的问题。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>线性回归模型是最简单的模型，但是麻雀虽小，五脏俱全，在这里，我们利用最小二乘误差得到了闭式解。同时也发现，在噪声为高斯分布的时候，MLE 的解等价于最小二乘误差，而增加了正则项后，最小二乘误差加上 L2 正则项等价于高斯噪声先验下的 MAP解，加上 L1 正则项后，等价于 Laplace 噪声先验。</p>
+<p>传统的机器学习方法或多或少都有线性回归模型的影子：</p>
+<ol>
+<li>线性模型往往不能很好地拟合数据，因此有三种方案克服这一劣势：<ol>
+<li>对特征的维数进行变换，例如多项式回归模型就是在线性特征的基础上加入高次项。</li>
+<li>在线性方程后面加入一个非线性变换，即引入一个非线性的激活函数，典型的有线性分类模型如感知机。</li>
+<li>对于一致的线性系数，我们进行多次变换，这样同一个特征不仅仅被单个系数影响，例如多层感知机（深度前馈网络）。</li>
+</ol>
+</li>
+<li>线性回归在整个样本空间都是线性的，我们修改这个限制，在不同区域引入不同的线性或非线性，例如线性样条回归和决策树模型。</li>
+<li>线性回归中使用了所有的样本，但是对数据预先进行加工学习的效果可能更好（所谓的维数灾难，高维度数据更难学习），例如 PCA 算法和流形学习。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://undark.gitee.io/posts/6d219808.html" data-id="cl5aubgq90016mgj38wfff4w6" data-title="白板推导-L03" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC%E7%B3%BB%E5%88%97/" rel="tag">白板推导系列</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="4a17b156.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+  
+    <a href="eb31d486.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">RM视觉自瞄代码上手文档</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="../categories/ML/">ML</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/life/">life</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E6%97%A5%E5%B8%B8/">日常</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E7%A7%AF%E7%B4%AF/">积累</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E9%A1%B9%E7%9B%AE/">项目</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="../tags/python/" rel="tag">-python</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/Error/" rel="tag">Error</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/matery/" rel="tag">matery</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/tips/" rel="tag">tips</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/update/" rel="tag">update</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E6%94%B6%E9%9B%86/" rel="tag">收集</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" rel="tag">文件结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC/" rel="tag">白板推导</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC%E7%B3%BB%E5%88%97/" rel="tag">白板推导系列</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/" rel="tag">知识图谱</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="../tags/python/" style="font-size: 10px;">-python</a> <a href="../tags/Error/" style="font-size: 15px;">Error</a> <a href="../tags/matery/" style="font-size: 10px;">matery</a> <a href="../tags/tips/" style="font-size: 15px;">tips</a> <a href="../tags/update/" style="font-size: 10px;">update</a> <a href="../tags/%E6%94%B6%E9%9B%86/" style="font-size: 10px;">收集</a> <a href="../tags/%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" style="font-size: 10px;">文件结构</a> <a href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC/" style="font-size: 10px;">白板推导</a> <a href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC%E7%B3%BB%E5%88%97/" style="font-size: 20px;">白板推导系列</a> <a href="../tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/" style="font-size: 10px;">知识图谱</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/05/">五月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/04/">四月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/03/">三月 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="4a17b156.html">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="">白板推导-L03</a>
+          </li>
+        
+          <li>
+            <a href="eb31d486.html">RM视觉自瞄代码上手文档</a>
+          </li>
+        
+          <li>
+            <a href="94101b71.html">阿凡的公众号</a>
+          </li>
+        
+          <li>
+            <a href="be6229dc.html">pyinstaller 处理 opencv-python和 mediapipe时遇到的问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 undark<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="../js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="../fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="../js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

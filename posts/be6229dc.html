@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>pyinstaller 处理 opencv-python和 mediapipe时遇到的问题 | Sunshine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="pyinstaller简单介绍这篇文章对pyinstaller的功能、使用方法、具体参数等进行了简单介绍。以下是我在具体使用过程中遇到的一些问题和解决方法。  opencv-pythonmodule不能够找到   更换版本之前将原本的版本卸载pip uninstall opencv-python  pyinstaller适用的opencv-python的版本为4.3.0.38  鉴于pip ins">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pyinstaller 处理 opencv-python和 mediapipe时遇到的问题">
+<meta property="og:url" content="https://undark.gitee.io/posts/be6229dc.html">
+<meta property="og:site_name" content="Sunshine">
+<meta property="og:description" content="pyinstaller简单介绍这篇文章对pyinstaller的功能、使用方法、具体参数等进行了简单介绍。以下是我在具体使用过程中遇到的一些问题和解决方法。  opencv-pythonmodule不能够找到   更换版本之前将原本的版本卸载pip uninstall opencv-python  pyinstaller适用的opencv-python的版本为4.3.0.38  鉴于pip ins">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-06-03T03:21:00.000Z">
+<meta property="article:modified_time" content="2022-06-03T19:30:10.936Z">
+<meta property="article:author" content="undark">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="../atom.xml" title="Sunshine" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="../favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="../css/style.css">
+
+  
+    
+<link rel="stylesheet" href="../fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="../index.html" id="logo">Sunshine</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="../index.html" id="subtitle">Sunshine-616</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="../index.html">Home</a>
+        
+          <a class="main-nav-link" href="../archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="../atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://undark.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-pyinstaller-处理-opencv-python和-mediapipe时遇到的问题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time class="dt-published" datetime="2022-06-03T03:21:00.000Z" itemprop="datePublished">2022-06-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      pyinstaller 处理 opencv-python和 mediapipe时遇到的问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://undark.gitee.io/posts/5a717bf0.html">pyinstaller简单介绍</a>这篇文章对pyinstaller的功能、使用方法、具体参数等进行了简单介绍。以下是我在具体使用过程中遇到的一些问题和解决方法。</p>
+<ol>
+<li><p><code>opencv-python</code>module不能够找到</p>
+<blockquote>
+<ul>
+<li><p>更换版本之前将原本的版本卸载<code>pip uninstall opencv-python</code></p>
+</li>
+<li><p>pyinstaller适用的opencv-python的版本为<code>4.3.0.38</code></p>
+</li>
+<li><p>鉴于<code>pip install opencv-python==4.3.0.38</code>下载速度过慢，这里给出网页下载.whl文件的网址：<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/46/02/ac23127e1308c4475c830c4cc4884b22b5268b85e72277429cea90ab5146/opencv_python-4.3.0.38-cp38-cp38-win_amd64.whl#sha256=69487fe07a43eecc9131ee158e4cea265c7193cf10838c1e0981a97fa212b619">opencv_python-4.3.0.38-cp38-cp38-win_amd64.whl</a> </p>
+</li>
+<li><p>下载完成后进入下载文件夹，<code>pip install opencv_python-4.3.0.38-cp38-cp38-win_amd64.whl</code>，至此安装完毕。</p>
+</li>
+</ul>
+</blockquote>
+</li>
+<li><p><code>mediapipe </code>module不能被找到</p>
+<blockquote>
+<p>方法一：</p>
+<ul>
+<li>若使用的是<code>-D</code>指令，则可以在生成好<code>dist</code>文件夹之后，将对应缺失的库文件，放在EXE文件对应的同级目录下，之后可以成功运行EXE。</li>
+</ul>
+<p>方法二：</p>
+<ul>
+<li>无论是什么操作<code>-D</code>或是<code>-F</code>，遇到类似于某些库文件找不到的情况时。</li>
+<li>可以加入参数：<code>--add-data=&quot;path_to_module&quot;</code></li>
+</ul>
+<p>其他：</p>
+<ul>
+<li>若存在<code>ModuleNotFoundError:No module named **</code>缺少包，而不是缺少包里面的某一个方法或属性，在源码中import下，或者在打包的时候加上<code>--hidden-import = **</code></li>
+</ul>
+</blockquote>
+</li>
+<li><p>是否能够检测所有库</p>
+<p>这个问题关键在于能否在命令行运行代码的主文件，如果可以运行则说明可以找到所需要的库，否则<code>pyinstaller</code>打包时不会发现需要的库。</p>
+<blockquote>
+<p>注意一个问题，如果使用了anaconda来进行环境管理，<code>pyinstaller</code>最好和代码文件在同一个<code>env</code>中，否则pyinstaller无法找到对应库的位置。</p>
+</blockquote>
+</li>
+<li><p>逻辑过程</p>
+<blockquote>
+<p>先使用<code>-D</code>产生dist文件夹中包含所有的内容，之后再使用<code>-F</code>生成对应的单个exe文件。</p>
+</blockquote>
+</li>
+<li><p>减少<code>EXE</code>文件的大小</p>
+<blockquote>
+<p>在函数中调用库的时候如<code>import cv2</code>，应该最好写成<code>from cv2 import imshow</code>之类的</p>
+</blockquote>
+</li>
+<li><p>对于有命令行的程序</p>
+<blockquote>
+<p>一定不要使用 <code>-w</code>操作，否则就不会显示出命令行。</p>
+</blockquote>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://undark.gitee.io/posts/be6229dc.html" data-id="cl5aubgq1000jmgj3byx4dub2" data-title="pyinstaller 处理 opencv-python和 mediapipe时遇到的问题" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="94101b71.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          阿凡的公众号
+        
+      </div>
+    </a>
+  
+  
+    <a href="c039fc0c.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">numpy中axis的理解</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="../categories/ML/">ML</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/life/">life</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E6%97%A5%E5%B8%B8/">日常</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E7%A7%AF%E7%B4%AF/">积累</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E9%A1%B9%E7%9B%AE/">项目</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="../tags/python/" rel="tag">-python</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/Error/" rel="tag">Error</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/matery/" rel="tag">matery</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/tips/" rel="tag">tips</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/update/" rel="tag">update</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E6%94%B6%E9%9B%86/" rel="tag">收集</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" rel="tag">文件结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC/" rel="tag">白板推导</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC%E7%B3%BB%E5%88%97/" rel="tag">白板推导系列</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/" rel="tag">知识图谱</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="../tags/python/" style="font-size: 10px;">-python</a> <a href="../tags/Error/" style="font-size: 15px;">Error</a> <a href="../tags/matery/" style="font-size: 10px;">matery</a> <a href="../tags/tips/" style="font-size: 15px;">tips</a> <a href="../tags/update/" style="font-size: 10px;">update</a> <a href="../tags/%E6%94%B6%E9%9B%86/" style="font-size: 10px;">收集</a> <a href="../tags/%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" style="font-size: 10px;">文件结构</a> <a href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC/" style="font-size: 10px;">白板推导</a> <a href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC%E7%B3%BB%E5%88%97/" style="font-size: 20px;">白板推导系列</a> <a href="../tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/" style="font-size: 10px;">知识图谱</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/05/">五月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/04/">四月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/03/">三月 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="4a17b156.html">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="6d219808.html">白板推导-L03</a>
+          </li>
+        
+          <li>
+            <a href="eb31d486.html">RM视觉自瞄代码上手文档</a>
+          </li>
+        
+          <li>
+            <a href="94101b71.html">阿凡的公众号</a>
+          </li>
+        
+          <li>
+            <a href="">pyinstaller 处理 opencv-python和 mediapipe时遇到的问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 undark<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="../js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="../fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="../js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

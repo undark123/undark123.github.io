@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>白板推导-L02 | Sunshine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathBasics高斯分布PDF(probability density function)一维情况 MLE（极大似然估计）高斯分布在机器学习中占有举足轻重的作用。在 MLE 方法中： $$\theta&#x3D;(\mu,\Sigma)&#x3D;(\mu,\sigma^{2}),\theta_{MLE}&#x3D;\mathop{argmax}\limits _{\theta}\log p(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="白板推导-L02">
+<meta property="og:url" content="https://undark.gitee.io/posts/1a26a89e.html">
+<meta property="og:site_name" content="Sunshine">
+<meta property="og:description" content="MathBasics高斯分布PDF(probability density function)一维情况 MLE（极大似然估计）高斯分布在机器学习中占有举足轻重的作用。在 MLE 方法中： $$\theta&#x3D;(\mu,\Sigma)&#x3D;(\mu,\sigma^{2}),\theta_{MLE}&#x3D;\mathop{argmax}\limits _{\theta}\log p(">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-20T13:19:48.000Z">
+<meta property="article:modified_time" content="2022-06-25T09:11:15.454Z">
+<meta property="article:author" content="undark">
+<meta property="article:tag" content="白板推导系列">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="../atom.xml" title="Sunshine" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="../favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="../css/style.css">
+
+  
+    
+<link rel="stylesheet" href="../fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="../index.html" id="logo">Sunshine</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="../index.html" id="subtitle">Sunshine-616</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="../index.html">Home</a>
+        
+          <a class="main-nav-link" href="../archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="../atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://undark.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-白板推导-L02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time class="dt-published" datetime="2022-04-20T13:19:48.000Z" itemprop="datePublished">2022-04-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="../categories/ML/">ML</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      白板推导-L02
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="MathBasics"><a href="#MathBasics" class="headerlink" title="MathBasics"></a>MathBasics</h1><h2 id="高斯分布PDF-probability-density-function"><a href="#高斯分布PDF-probability-density-function" class="headerlink" title="高斯分布PDF(probability density function)"></a>高斯分布PDF(probability density function)</h2><h3 id="一维情况-MLE（极大似然估计）"><a href="#一维情况-MLE（极大似然估计）" class="headerlink" title="一维情况 MLE（极大似然估计）"></a>一维情况 MLE（极大似然估计）</h3><p>高斯分布在机器学习中占有举足轻重的作用。在 MLE 方法中：</p>
+<p>$$<br>\theta&#x3D;(\mu,\Sigma)&#x3D;(\mu,\sigma^{2}),\theta_{MLE}&#x3D;\mathop{argmax}\limits _{\theta}\log p(X|\theta)\mathop{&#x3D;}\limits _{iid}\mathop{argmax}\limits _{\theta}\sum\limits <em>{i&#x3D;1}^{N}\log p(x</em>{i}|\theta)<br>$$<br>一般地，高斯分布的概率密度函数PDF写为：</p>
+<p>$$<br>p(x|\mu,\Sigma)&#x3D;\frac{1}{(2\pi)^{p&#x2F;2}|\Sigma|^{1&#x2F;2}}e^{-\frac{1}{2}(x-\mu)^{T}\Sigma^{-1}(x-\mu)}<br>$$<br>带入 MLE 中我们考虑一维的情况</p>
+<p>$$<br>\log p(X|\theta)&#x3D;\sum\limits <em>{i&#x3D;1}^{N}\log p(x</em>{i}|\theta)&#x3D;\sum\limits <em>{i&#x3D;1}^{N}\log\frac{1}{\sqrt{2\pi}\sigma}\exp(-(x</em>{i}-\mu)^{2}&#x2F;2\sigma^{2})<br>$$<br>首先对 $\mu$ 的极值可以得到 ：<br>$$<br>\mu_{MLE}&#x3D;\mathop{argmax}\limits <em>{\mu}\log p(X|\theta)&#x3D;\mathop{argmax}\limits <em>{\mu}\sum\limits <em>{i&#x3D;1}^{N}(x</em>{i}-\mu)^{2}<br>$$<br> 于是：<br>$$<br>\frac{\partial}{\partial\mu}\sum\limits <em>{i&#x3D;1}^{N}(x</em>{i}-\mu)^{2}&#x3D;0\longrightarrow\mu</em>{MLE}&#x3D;\frac{1}{N}\sum\limits <em>{i&#x3D;1}^{N}x</em>{i}<br>$$<br>其次对 $\theta$ 中的另一个参数 $\sigma$ ，有：<br>$$<br>\begin{align}<br>\sigma</em>{MLE}&#x3D;\mathop{argmax}\limits <em>{\sigma}\log p(X|\theta)&amp;&#x3D;\mathop{argmax}\limits <em>{\sigma}\sum\limits <em>{i&#x3D;1}^{N}[-\log\sigma-\frac{1}{2\sigma^{2}}(x</em>{i}-\mu)^{2}]\nonumber\<br>&amp;&#x3D;\mathop{argmin}\limits <em>{\sigma}\sum\limits <em>{i&#x3D;1}^{N}[\log\sigma+\frac{1}{2\sigma^{2}}(x</em>{i}-\mu)^{2}]<br>\end{align}<br>$$<br>于是：<br>$$<br>\frac{\partial}{\partial\sigma}\sum\limits <em>{i&#x3D;1}^{N}[\log\sigma+\frac{1}{2\sigma^{2}}(x</em>{i}-\mu)^{2}]&#x3D;0\longrightarrow\sigma</em>{MLE}^{2}&#x3D;\frac{1}{N}\sum\limits <em>{i&#x3D;1}^{N}(x</em>{i}-\mu)^{2}<br>$$<br>值得注意的是，上面的推导中，**首先对 $\mu$ 求 MLE， 然后利用这个结果求 $\sigma</em>{MLE}$** ，因此可以预期的是对数据集求期望时 $\mathbb{E}</em>{\mathcal{D}}[\mu_{MLE}]$ 是无偏差的：<br>$$<br>\mathbb{E}<em>{\mathcal{D}}[\mu</em>{MLE}]&#x3D;\mathbb{E}<em>{\mathcal{D}}[\frac{1}{N}\sum\limits <em>{i&#x3D;1}^{N}x</em>{i}]&#x3D;\frac{1}{N}\sum\limits <em>{i&#x3D;1}^{N}\mathbb{E}</em>{\mathcal{D}}[x</em>{i}]&#x3D;\mu<br>$$<br>但是当对 $\sigma_{MLE}$ 求 期望的时候由于**使用了单个数据集的 $\mu_{MLE}$**，因此对所有数据集求期望的时候我们会发现 $\sigma_{MLE}$ 是 有偏的：</p>
+<p>$$<br>\begin{align}<br>\mathbb{E}<em>{\mathcal{D}}[\sigma</em>{MLE}^{2}]&amp;&#x3D;\mathbb{E}<em>{\mathcal{D}}[\frac{1}{N}\sum\limits <em>{i&#x3D;1}^{N}(x</em>{i}-\mu</em>{MLE})^{2}]&#x3D;\mathbb{E}<em>{\mathcal{D}}[\frac{1}{N}\sum\limits <em>{i&#x3D;1}^{N}(x</em>{i}^{2}-2x</em>{i}\mu_{MLE}+\mu_{MLE}^{2})\nonumber<br>\&amp;&#x3D;\mathbb{E}<em>{\mathcal{D}}[\frac{1}{N}\sum\limits <em>{i&#x3D;1}^{N}x</em>{i}^{2}-\mu</em>{MLE}^{2}]&#x3D;\mathbb{E}<em>{\mathcal{D}}[\frac{1}{N}\sum\limits <em>{i&#x3D;1}^{N}x</em>{i}^{2}-\mu^{2}+\mu^{2}-\mu</em>{MLE}^{2}]\nonumber\<br>&amp;&#x3D; \mathbb{E}<em>{\mathcal{D}}[\frac{1}{N}\sum\limits <em>{i&#x3D;1}^{N}x</em>{i}^{2}-\mu^{2}]-\mathbb{E}</em>{\mathcal{D}}[\mu_{MLE}^{2}-\mu^{2}]&#x3D;\sigma^{2}-(\mathbb{E}<em>{\mathcal{D}}[\mu</em>{MLE}^{2}]-\mu^{2})\nonumber\&amp;&#x3D;\sigma^{2}-(\mathbb{E}<em>{\mathcal{D}}[\mu</em>{MLE}^{2}]-\mathbb{E}<em>{\mathcal{D}}^{2}[\mu</em>{MLE}])&#x3D;\sigma^{2}-Var[\mu_{MLE}]\nonumber\&amp;&#x3D;\sigma^{2}-Var[\frac{1}{N}\sum\limits <em>{i&#x3D;1}^{N}x</em>{i}]&#x3D;\sigma^{2}-\frac{1}{N^{2}}\sum\limits <em>{i&#x3D;1}^{N}Var[x</em>{i}]&#x3D;\frac{N-1}{N}\sigma^{2}<br>\end{align}<br>$$<br>所以：<br>$$<br>\hat{\sigma}^{2}&#x3D;\frac{1}{N-1}\sum\limits <em>{i&#x3D;1}^{N}(x</em>{i}-\mu)^{2}<br>$$</p>
+<h3 id="多维情况"><a href="#多维情况" class="headerlink" title="多维情况"></a>多维情况</h3><p>多维高斯分布表达式为：<br>$$<br>p(x|\mu,\Sigma)&#x3D;\frac{1}{(2\pi)^{p&#x2F;2}|\Sigma|^{1&#x2F;2}}e^{-\frac{1}{2}(x-\mu)^{T}\Sigma^{-1}(x-\mu)}<br>$$<br>其中 $x,\mu\in\mathbb{R}^{p},\Sigma\in\mathbb{R}^{p\times p}$ ，$\Sigma$ 为协方差矩阵，一般而言也是半正定矩阵。这里我们只考虑正定矩阵。首先我们处理指数上的数字，指数上的数字可以记为 $x$ 和 $\mu$ 之间的<strong>马氏距离</strong>。</p>
+<blockquote>
+<p>:carrot:马氏距离：</p>
+<ul>
+<li><p>${(x-\mu)^{T}\Sigma^{-1}(x-\mu)}$  即指的是$x\ and\ \mu $之间的马氏距离。是一种有效计算两个未知样本集的相似度的方法。与欧式距离不同，马氏距离考虑到各种特性之间的联系。</p>
+</li>
+<li><p>当$\Sigma $为单位阵时，马氏距离与欧氏距离相同。($\Sigma$指的是方差矩阵)</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="对方差矩阵进行分析："><a href="#对方差矩阵进行分析：" class="headerlink" title="对方差矩阵进行分析："></a><strong><font color=blue>对方差矩阵进行分析：</font></strong></h4><p>对于对称的协方差矩阵可进行特征值分解，$\Sigma&#x3D;U\Lambda U^{T}&#x3D;(u_{1},u_{2},\cdots,u_{p})diag(\lambda_{i})(u_{1},u_{2},\cdots,u_{p})^{T}&#x3D;\sum\limits <em>{i&#x3D;1}^{p}u</em>{i}\lambda_{i}u_{i}^{T}$ ，（其中的$U和V$是正交阵）于是：<br>$$<br>\Sigma^{-1}&#x3D;\sum\limits <em>{i&#x3D;1}^{p}u</em>{i}\frac{1}{\lambda_{i}}u_{i}^{T}<br>$$</p>
+<p>$$<br>\Delta&#x3D;(x-\mu)^{T}\Sigma^{-1}(x-\mu)&#x3D;\sum\limits <em>{i&#x3D;1}^{p}(x-\mu)^{T}u</em>{i}\frac{1}{\lambda_{i}}u_{i}^{T}(x-\mu)&#x3D;\sum\limits <em>{i&#x3D;1}^{p}\frac{y</em>{i}^{2}}{\lambda_{i}}<br>$$</p>
+<p>我们注意到 $y_{i}$ 是 $x-\mu$ 在特征向量 $u_{i}$ 上的投影长度，因此上式子就是 $\Delta$ 取不同值时的同心椭圆。</p>
+<blockquote>
+<p>:carrot:对于二维情况时，马氏距离就表现成二维平面下的椭圆。</p>
+<p><strong>高斯分布的形状就是椭圆。</strong></p>
+</blockquote>
+<h4 id="多维高斯模型在实际应用时的两个问题"><a href="#多维高斯模型在实际应用时的两个问题" class="headerlink" title="多维高斯模型在实际应用时的两个问题"></a><font color = blue>多维高斯模型在实际应用时的两个问题</font></h4><ol>
+<li><p>参数 $\Sigma,\mu$ 的自由度为 $O(p^{2})$ 对于维度很高的数据其自由度太高。解决方案：高自由度的来源是 $\Sigma$ 有 $\frac{p(p+1)}{2}$ 个自由参数，可以假设其是对角矩阵，甚至在各向同性假设中假设其对角线上的元素都相同。前一种的算法有 Factor Analysis，后一种有概率 PCA(p-PCA) 。</p>
+</li>
+<li><p>第二个问题是单个高斯分布是单峰的，对有多个峰的数据分布不能得到好的结果。解决方案：高斯混合GMM 模型。</p>
+</li>
+</ol>
+<h4 id="多维高斯分布的常用定理"><a href="#多维高斯分布的常用定理" class="headerlink" title="多维高斯分布的常用定理"></a><font color = blue>多维高斯分布的常用定理</font></h4><p>我们记 $x&#x3D;(x_1, x_2,\cdots,x_p)^T&#x3D;(x_{a,m\times 1}, x_{b,n\times1})^T,\mu&#x3D;(\mu_{a,m\times1}, \mu_{b,n\times1}),\Sigma&#x3D;\begin{pmatrix}\Sigma_{aa}&amp;\Sigma_{ab}\\Sigma_{ba}&amp;\Sigma_{bb}\end{pmatrix}$，已知 $x\sim\mathcal{N}(\mu,\Sigma)$。</p>
+<p>首先是一个高斯分布的定理：</p>
+<blockquote>
+<p>  定理：已知 $x\sim\mathcal{N}(\mu,\Sigma), y\sim Ax+b$，那么 $y\sim\mathcal{N}(A\mu+b, A\Sigma A^T)$。</p>
+<p>  证明：$\mathbb{E}[y]&#x3D;\mathbb{E}[Ax+b]&#x3D;A\mathbb{E}[x]+b&#x3D;A\mu+b$，$Var[y]&#x3D;Var[Ax+b]&#x3D;Var[Ax]&#x3D;A\cdot Var[x]\cdot A^T$。</p>
+</blockquote>
+<p>下面利用这个定理得到 $p(x_a),p(x_b),p(x_a|x_b),p(x_b|x_a)$ 这四个量。&#x2F;&#x2F; 边缘概率分布、条件概率分布</p>
+<ol>
+<li><p>$x_a&#x3D;\begin{pmatrix}\mathbb{I}<em>{m\times m}&amp;\mathbb{O}</em>{m\times n})\end{pmatrix}\begin{pmatrix}x_a\x_b\end{pmatrix}$，代入定理中得到：<br>$$<br>\mathbb{E}[x_a]&#x3D;\begin{pmatrix}\mathbb{I}&amp;\mathbb{O}\end{pmatrix}\begin{pmatrix}\mu_a\\mu_b\end{pmatrix}&#x3D;\mu_a\<br>Var[x_a]&#x3D;\begin{pmatrix}\mathbb{I}&amp;\mathbb{O}\end{pmatrix}\begin{pmatrix}\Sigma_{aa}&amp;\Sigma_{ab}\\Sigma_{ba}&amp;\Sigma_{bb}\end{pmatrix}\begin{pmatrix}\mathbb{I}\\mathbb{O}\end{pmatrix}&#x3D;\Sigma_{aa}<br>$$<br>所以 $x_a\sim\mathcal{N}(\mu_a,\Sigma_{aa})$。</p>
+</li>
+<li><p>同样的，$x_b\sim\mathcal{N}(\mu_b,\Sigma_{bb})$。</p>
+</li>
+<li><p>对于两个条件概率，我们引入三个量：<br>$$<br>x_{b\cdot a}&#x3D;x_b-\Sigma_{ba}\Sigma_{aa}^{-1}x_a\<br>\mu_{b\cdot a}&#x3D;\mu_b-\Sigma_{ba}\Sigma_{aa}^{-1}\mu_a\<br>\Sigma_{bb\cdot a}&#x3D;\Sigma_{bb}-\Sigma_{ba}\Sigma_{aa}^{-1}\Sigma_{ab}<br>$$<br>特别的，最后一个式子叫做 $\Sigma_{bb}$ 的 Schur Complementary。可以看到：<br>$$<br>x_{b\cdot a}&#x3D;\begin{pmatrix}-\Sigma_{ba}\Sigma_{aa}^{-1}&amp;\mathbb{I}<em>{n\times n}\end{pmatrix}\begin{pmatrix}x_a\x_b\end{pmatrix}<br>$$<br>所以：<br>$$<br>\mathbb{E}[x</em>{b\cdot a}]&#x3D;\begin{pmatrix}-\Sigma_{ba}\Sigma_{aa}^{-1}&amp;\mathbb{I}<em>{n\times n}\end{pmatrix}\begin{pmatrix}\mu_a\\mu_b\end{pmatrix}&#x3D;\mu</em>{b\cdot a}\<br>Var[x_{b\cdot a}]&#x3D;\begin{pmatrix}-\Sigma_{ba}\Sigma_{aa}^{-1}&amp;\mathbb{I}<em>{n\times n}\end{pmatrix}\begin{pmatrix}\Sigma</em>{aa}&amp;\Sigma_{ab}\\Sigma_{ba}&amp;\Sigma_{bb}\end{pmatrix}\begin{pmatrix}-\Sigma_{aa}^{-1}\Sigma_{ba}^T\\mathbb{I}<em>{n\times n}\end{pmatrix}&#x3D;\Sigma</em>{bb\cdot a}<br>$$<br>利用这三个量可以得到 $x_b&#x3D;x_{b\cdot a}+\Sigma_{ba}\Sigma_{aa}^{-1}x_a$。因此：<br>$$<br>\mathbb{E}[x_b|x_a]&#x3D;\mu_{b\cdot a}+\Sigma_{ba}\Sigma_{aa}^{-1}x_a<br>$$</p>
+<p>$$<br>Var[x_b|x_a]&#x3D;\Sigma_{bb\cdot a}<br>$$</p>
+<p>这里同样用到了定理。</p>
+<blockquote>
+<p>补充：上述内容中，$\mathbb{E}[x_b|x_a]&#x3D;\mathbb{E}[x_b]$需要进行$x_{b\cdot a}和x_a$相互独立的证明：</p>
+<ul>
+<li>证明过程使用到了定理：$若X\sim\mathcal{N}{\mu,\Sigma},则 Mx\perp Nx \iff M \Sigma N^T &#x3D; 0 $（定理证明：利用$Cov(Mx,Nx)$在$Mx,Nx$垂直且均为高斯分布时为零。</li>
+<li>证明$x_{b·a}\perp x_a$独立\垂直：矩阵形式下和上述定理对照，找出对应的M和N即可证明$M \Sigma N^T &#x3D; 0$，进而证明出$x_{b·a}\perp x_a$。</li>
+<li>由$x_{b·a}\perp x_a$得到$\mathbb{E}(x_{b·a}|x_a)&#x3D;\mathbb{E}(x_{b·a})$ </li>
+<li>进而得到$\mathbb{E}(x_{b}| x_a)&#x3D;\mathbb{E}(x_{b·a}|x_a) +\mathbb{E}(\Sigma_{ba}\Sigma_{aa}^{-1}x_a|x_a)&#x3D;\mathbb{E}(x_{b·a})+\mathbb{E}(\Sigma_{ba}\Sigma_{aa}^{-1}x_a)$</li>
+</ul>
+</blockquote>
+</li>
+<li><p>同样：<br>$$<br>x_{a\cdot b}&#x3D;x_a-\Sigma_{ab}\Sigma_{bb}^{-1}x_b\<br>\mu_{a\cdot b}&#x3D;\mu_a-\Sigma_{ab}\Sigma_{bb}^{-1}\mu_b\<br>\Sigma_{aa\cdot b}&#x3D;\Sigma_{aa}-\Sigma_{ab}\Sigma_{bb}^{-1}\Sigma_{ba}<br>$$<br>所以：<br>$$<br>\mathbb{E}[x_a|x_b]&#x3D;\mu_{a\cdot b}+\Sigma_{ab}\Sigma_{bb}^{-1}x_b<br>$$</p>
+<p>$$<br>Var[x_a|x_b]&#x3D;\Sigma_{aa\cdot b}<br>$$</p>
+</li>
+</ol>
+<p>下面利用上边四个量，求解线性模型：</p>
+<blockquote>
+<p>  已知：$p(x)&#x3D;\mathcal{N}(\mu,\Lambda^{-1}),p(y|x)&#x3D;\mathcal{N}(Ax+b,L^{-1})$，求解：$p(y),p(x|y)$。</p>
+<p>  解：令 $y&#x3D;Ax+b+\epsilon,\epsilon\sim\mathcal{N}(0,L^{-1})$，所以 $\mathbb{E}[y]&#x3D;\mathbb{E}[Ax+b+\epsilon]&#x3D;A\mu+b$，$Var[y]&#x3D;A \Lambda^{-1}A^T+L^{-1}$，因此：<br>  $$<br>  p(y)&#x3D;\mathcal{N}(A\mu+b,L^{-1}+A\Lambda^{-1}A^T)<br>  $$<br>  引入 $z&#x3D;\begin{pmatrix}x\y\end{pmatrix}$，我们可以得到 $Cov[x,y]&#x3D;\mathbb{E}[(x-\mathbb{E}[x])(y-\mathbb{E}[y])^T]$。对于这个协方差可以直接计算：<br>  $$<br>  \begin{align}<br>  Cov(x,y)&amp;&#x3D;\mathbb{E}[(x-\mu)(Ax-A\mu+\epsilon)^T]&#x3D;\mathbb{E}[(x-\mu)(x-\mu)^TA^T]&#x3D;Var[x]A^T&#x3D;\Lambda^{-1}A^T<br>  \end{align}<br>  $$<br>  注意到协方差矩阵的对称性，所以 $p(z)&#x3D;\mathcal{N}\begin{pmatrix}\mu\A\mu+b\end{pmatrix},\begin{pmatrix}\Lambda^{-1}&amp;\Lambda^{-1}A^T\A\Lambda^{-1}&amp;L^{-1}+A\Lambda^{-1}A^T\end{pmatrix})$。根据之前的公式，我们可以得到：<br>  $$<br>  \mathbb{E}[x|y]&#x3D;\mu+\Lambda^{-1}A^T(L^{-1}+A\Lambda^{-1}A^T)^{-1}(y-A\mu-b)<br>  $$</p>
+<p>  $$<br>  Var[x|y]&#x3D;\Lambda^{-1}-\Lambda^{-1}A^T(L^{-1}+A\Lambda^{-1}A^T)^{-1}A\Lambda^{-1}<br>  $$</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://undark.gitee.io/posts/1a26a89e.html" data-id="cl5aubgq80015mgj3b2vp2xos" data-title="白板推导-L02" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC%E7%B3%BB%E5%88%97/" rel="tag">白板推导系列</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="ded347d.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          我的报错日常
+        
+      </div>
+    </a>
+  
+  
+    <a href="ee432fb0.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">朝花夕拾</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="../categories/ML/">ML</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/life/">life</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E6%97%A5%E5%B8%B8/">日常</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E7%A7%AF%E7%B4%AF/">积累</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E9%A1%B9%E7%9B%AE/">项目</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="../tags/python/" rel="tag">-python</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/Error/" rel="tag">Error</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/matery/" rel="tag">matery</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/tips/" rel="tag">tips</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/update/" rel="tag">update</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E6%94%B6%E9%9B%86/" rel="tag">收集</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" rel="tag">文件结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC/" rel="tag">白板推导</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC%E7%B3%BB%E5%88%97/" rel="tag">白板推导系列</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/" rel="tag">知识图谱</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="../tags/python/" style="font-size: 10px;">-python</a> <a href="../tags/Error/" style="font-size: 15px;">Error</a> <a href="../tags/matery/" style="font-size: 10px;">matery</a> <a href="../tags/tips/" style="font-size: 15px;">tips</a> <a href="../tags/update/" style="font-size: 10px;">update</a> <a href="../tags/%E6%94%B6%E9%9B%86/" style="font-size: 10px;">收集</a> <a href="../tags/%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" style="font-size: 10px;">文件结构</a> <a href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC/" style="font-size: 10px;">白板推导</a> <a href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC%E7%B3%BB%E5%88%97/" style="font-size: 20px;">白板推导系列</a> <a href="../tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/" style="font-size: 10px;">知识图谱</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/05/">五月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/04/">四月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/03/">三月 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="4a17b156.html">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="6d219808.html">白板推导-L03</a>
+          </li>
+        
+          <li>
+            <a href="eb31d486.html">RM视觉自瞄代码上手文档</a>
+          </li>
+        
+          <li>
+            <a href="94101b71.html">阿凡的公众号</a>
+          </li>
+        
+          <li>
+            <a href="be6229dc.html">pyinstaller 处理 opencv-python和 mediapipe时遇到的问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 undark<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="../js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="../fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="../js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
