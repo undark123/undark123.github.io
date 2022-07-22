@@ -1,347 +1,310 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>LSTM | Sunshine</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="LSTM模型RNNRNN优势传统的神经网络不能做到将过去的记忆保留下来的功能，但RNN解决了这个问题。  RNN 是包含循环的网络，允许信息的持久化。     在上面的示例图中，神经网络的模块$A$正在读取某个输入$x_t$，并输出一个值$h_t$ 。循环可以使得信息从当前步传递到下一步。     将之前的循环展开后。    RNN存在的问题 长期依赖（Long-Term Dependencies">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>LSTM | Sunshine</title><meta name="author" content="undark"><meta name="copyright" content="undark"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="LSTM模型 RNN RNN优势 传统的神经网络不能做到将过去的记忆保留下来的功能，但RNN解决了这个问题。   RNN 是包含循环的网络，允许信息的持久化。     在上面的示例图中，神经网络的模块AAA正在读取某个输入xtx_txt​，并输出一个值hth_tht​ 。循环可以使得信息从当前步传递到下一步。      将之前的循环展开后。    RNN存在的问题   长期依赖（Long-Term">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LSTM">
 <meta property="og:url" content="https://undark.gitee.io/posts/48c60d0d.html">
 <meta property="og:site_name" content="Sunshine">
-<meta property="og:description" content="LSTM模型RNNRNN优势传统的神经网络不能做到将过去的记忆保留下来的功能，但RNN解决了这个问题。  RNN 是包含循环的网络，允许信息的持久化。     在上面的示例图中，神经网络的模块$A$正在读取某个输入$x_t$，并输出一个值$h_t$ 。循环可以使得信息从当前步传递到下一步。     将之前的循环展开后。    RNN存在的问题 长期依赖（Long-Term Dependencies">
+<meta property="og:description" content="LSTM模型 RNN RNN优势 传统的神经网络不能做到将过去的记忆保留下来的功能，但RNN解决了这个问题。   RNN 是包含循环的网络，允许信息的持久化。     在上面的示例图中，神经网络的模块AAA正在读取某个输入xtx_txt​，并输出一个值hth_tht​ 。循环可以使得信息从当前步传递到下一步。      将之前的循环展开后。    RNN存在的问题   长期依赖（Long-Term">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://undark.gitee.io/posts/LSTM/format,png.png">
-<meta property="og:image" content="https://undark.gitee.io/posts/LSTM/format,png-16536190862783.png">
-<meta property="og:image" content="https://undark.gitee.io/posts/LSTM/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21jaDI4NjkyNTMxMzA=,size_16,color_FFFFFF,t_70.png">
-<meta property="og:image" content="https://undark.gitee.io/posts/LSTM/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21jaDI4NjkyNTMxMzA=,size_16,color_FFFFFF,t_70-165362022256914.png">
-<meta property="og:image" content="https://undark.gitee.io/posts/LSTM/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21jaDI4NjkyNTMxMzA=,size_16,color_FFFFFF,t_70-165362025876016.png">
-<meta property="og:image" content="https://undark.gitee.io/posts/LSTM/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21jaDI4NjkyNTMxMzA=,size_16,color_FFFFFF,t_70-165362066927319.png">
-<meta property="og:image" content="https://undark.gitee.io/posts/LSTM/format,png-165362094609821.png">
+<meta property="og:image" content="https://undark.gitee.io/posts/48c60d0d.htmlundefined">
 <meta property="article:published_time" content="2022-05-27T02:23:45.000Z">
 <meta property="article:modified_time" content="2022-05-28T15:50:51.931Z">
 <meta property="article:author" content="undark">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://undark.gitee.io/posts/LSTM/format,png.png">
-  
-    <link rel="alternate" href="../atom.xml" title="Sunshine" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="../favicon.png">
-  
-  
-  
-<link rel="stylesheet" href="../css/style.css">
+<meta name="twitter:image" content="https://undark.gitee.io/posts/48c60d0d.htmlundefined"><link rel="shortcut icon" href="../medias/logo.png"><link rel="canonical" href="https://undark.gitee.io/posts/48c60d0d"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="../css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'LSTM',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-05-28 23:50:51'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
 
-  
-    
-<link rel="stylesheet" href="../fancybox/jquery.fancybox.min.css">
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
 
-  
-<meta name="generator" content="Hexo 6.2.0"></head>
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="../index.html" id="logo">Sunshine</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="../index.html" id="subtitle">Sunshine-616</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="../index.html">Home</a>
-        
-          <a class="main-nav-link" href="../archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="../atom.xml" title="RSS 订阅"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://undark.gitee.io"></form>
-      </div>
-    </div>
-  </div>
-</header>
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
 
-      <div class="outer">
-        <section id="main"><article id="post-LSTM" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="" class="article-date">
-  <time class="dt-published" datetime="2022-05-27T02:23:45.000Z" itemprop="datePublished">2022-05-27</time>
-</a>
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
         
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      LSTM
-    </h1>
-  
-
-      </header>
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
     
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="LSTM模型"><a href="#LSTM模型" class="headerlink" title="LSTM模型"></a>LSTM模型</h1><h2 id="RNN"><a href="#RNN" class="headerlink" title="RNN"></a>RNN</h2><h3 id="RNN优势"><a href="#RNN优势" class="headerlink" title="RNN优势"></a>RNN优势</h3><p>传统的神经网络不能做到将过去的记忆保留下来的功能，但RNN解决了这个问题。</p>
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="../medias/avatar/avatar1.jpg" onerror="onerror=null;src='/medias/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="../archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="../tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="../categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="../index.html"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="../archives"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="../tags"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="../categories"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="../link"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="../about"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('48c60d0d.htmlundefined')"><nav id="nav"><span id="blog_name"><a id="site-name" href="../index.html">Sunshine</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="../index.html"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="../archives"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="../tags"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="../categories"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="../link"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="../about"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">LSTM</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-05-27T02:23:45.000Z" title="发表于 2022-05-27 10:23:45">2022-05-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-05-28T15:50:51.931Z" title="更新于 2022-05-28 23:50:51">2022-05-28</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">781</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="LSTM"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>LSTM模型</h1>
+<h2 id="RNN">RNN</h2>
+<h3 id="RNN优势">RNN优势</h3>
+<p>传统的神经网络不能做到将过去的记忆保留下来的功能，但RNN解决了这个问题。</p>
 <ul>
-<li><p>RNN 是包含循环的网络，允许信息的持久化。</p>
+<li>
+<p>RNN 是包含循环的网络，允许信息的持久化。</p>
 </li>
-<li><img src="LSTM/format,png.png" alt="RNN" style="zoom: 50%;" />
-
+<li>
+<img src="LSTM/format,png.png" alt="RNN" style="zoom: 50%;" />
 <blockquote>
-<p>在上面的示例图中，神经网络的模块$A$正在读取某个输入$x_t$，并输出一个值$h_t$ 。循环可以使得信息从当前步传递到下一步。</p>
+<p>在上面的示例图中，神经网络的模块<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span>正在读取某个输入<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">x_t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，并输出一个值<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>h</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">h_t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 。循环可以使得信息从当前步传递到下一步。</p>
 </blockquote>
 </li>
-<li><p><img src="LSTM/format,png-16536190862783.png" alt="展开的 RNN"></p>
+<li>
+<p><img src="LSTM/format,png-16536190862783.png" alt="展开的 RNN"></p>
 <blockquote>
 <p>将之前的循环展开后。</p>
 </blockquote>
 </li>
 </ul>
-<h3 id="RNN存在的问题"><a href="#RNN存在的问题" class="headerlink" title="RNN存在的问题"></a>RNN存在的问题</h3><ul>
-<li><p>长期依赖（Long-Term Dependencies）问题</p>
+<h3 id="RNN存在的问题">RNN存在的问题</h3>
+<ul>
+<li>
+<p>长期依赖（Long-Term Dependencies）问题</p>
 <blockquote>
 <p>存在一些复杂场景，需要之前提到的离当前距离很远的内容，说明相关信息和当前预测位置之间的间隔会变得相当大。而RNN会丧失学习到连接如此远的信息的能力。</p>
 </blockquote>
 </li>
 </ul>
-<h2 id="LSTM"><a href="#LSTM" class="headerlink" title="LSTM"></a>LSTM</h2><img src="LSTM/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21jaDI4NjkyNTMxMzA=,size_16,color_FFFFFF,t_70.png" alt="网络结构" style="zoom:50%;" />
-
-<h3 id="对比RNN"><a href="#对比RNN" class="headerlink" title="对比RNN"></a>对比RNN</h3><ul>
+<h2 id="LSTM">LSTM</h2>
+<img src="LSTM/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21jaDI4NjkyNTMxMzA=,size_16,color_FFFFFF,t_70.png" alt="网络结构" style="zoom:50%;" />
+<h3 id="对比RNN">对比RNN</h3>
+<ul>
 <li>RNN的一个cell中只有一个神经网络，而LSTM的一个cell中有4个神经网络，故一个LSTM cell的参数是一个RNN cell参数的四倍。</li>
 <li>原来的一个RNN cell只需要存储一个隐藏层状态h，而一个LSTM cell需要存储两个状态c和h。</li>
 <li>LSTM比RNN多了一个细胞状态（也就是c），像一个传送带，信息可以不加改变的流动。即Ct-2可能和Ct+1存储的信息可能非常相似，所以<strong>LSTM可以解决RNN长依赖的问题。</strong></li>
 </ul>
-<h3 id="Gates"><a href="#Gates" class="headerlink" title="Gates"></a>Gates</h3><p>:carrot:使用sigmoid函数和按位乘法操作，来描述当前的输入有<strong>多少的信息量可以通过这个结构</strong>。</p>
+<h3 id="Gates">Gates</h3>
+<p>:carrot:使用sigmoid函数和按位乘法操作，来描述当前的输入有<strong>多少的信息量可以通过这个结构</strong>。</p>
 <ul>
-<li><p>忘记门：将值朝0减少</p>
+<li>
+<p>忘记门：将值朝0减少</p>
 <blockquote>
 <ol>
-<li><p>决定从细胞状态里扔掉什么信息（也就是保留多少信息）。</p>
+<li>
+<p>决定从细胞状态里扔掉什么信息（也就是保留多少信息）。</p>
 </li>
-<li><p>通过sigmoid层实现的“忘记门”。然后为$C_{t-1}$里的每个数字输出一个0-1间的值，记为$f_t$，表示保留多少信息。</p>
+<li>
+<p>通过sigmoid层实现的“忘记门”。然后为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">C_{t-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8917em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span></span></span></span>里的每个数字输出一个0-1间的值，记为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">f_t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.1076em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，表示保留多少信息。</p>
 <p><img src="LSTM/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21jaDI4NjkyNTMxMzA=,size_16,color_FFFFFF,t_70-165362022256914.png" alt="f"></p>
 </li>
 </ol>
 </blockquote>
 </li>
-<li><p>输入门：决定存什么进入</p>
+<li>
+<p>输入门：决定存什么进入</p>
 <blockquote>
 <ol>
-<li><p>sigmoid层（输入门层）决定我们要更新什么值，这个概率表示为$i_t$</p>
+<li>
+<p>sigmoid层（输入门层）决定我们要更新什么值，这个概率表示为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>i</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">i_t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8095em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></p>
 </li>
-<li><p>tanh层创建一个候选值向量$\tilde C_t$，将会被增加到细胞状态中。 我们将会在下一步把这两个结合起来更新细胞状态。</p>
+<li>
+<p>tanh层创建一个候选值向量<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover accent="true"><mi>C</mi><mo>~</mo></mover><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">\tilde C_t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0702em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9202em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span><span style="top:-3.6023em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，将会被增加到细胞状态中。 我们将会在下一步把这两个结合起来更新细胞状态。</p>
 </li>
 </ol>
-<p>   <img src="LSTM/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21jaDI4NjkyNTMxMzA=,size_16,color_FFFFFF,t_70-165362025876016.png" alt="i"></p>
+<p><img src="LSTM/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21jaDI4NjkyNTMxMzA=,size_16,color_FFFFFF,t_70-165362025876016.png" alt="i"></p>
 </blockquote>
 </li>
-<li><p>输出门：输出（隐藏状态）</p>
+<li>
+<p>输出门：输出（隐藏状态）</p>
 <blockquote>
 <ol>
-<li><p>我们通过sigmoid层（输出层门）来决定输出的本细胞状态$C_t$的哪些部分。</p>
+<li>
+<p>我们通过sigmoid层（输出层门）来决定输出的本细胞状态<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">C_t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>的哪些部分。</p>
 </li>
-<li><p>然后我们将细胞状态通过tanh层（使值在-1~1之间），然后与sigmoid层的输出相乘得到最终的输出$h_t$。</p>
+<li>
+<p>然后我们将细胞状态通过tanh层（使值在-1~1之间），然后与sigmoid层的输出相乘得到最终的输出<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>h</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">h_t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>。</p>
 <p><img src="LSTM/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L21jaDI4NjkyNTMxMzA=,size_16,color_FFFFFF,t_70-165362066927319.png" alt="o"></p>
 </li>
 </ol>
 </blockquote>
 </li>
 </ul>
-<h3 id="变体"><a href="#变体" class="headerlink" title="变体"></a>变体</h3><ul>
-<li><p><code>Gers&amp;Schimidhuber</code>增添了“peephole connection”，让门也接受细胞状态的输入。</p>
+<h3 id="变体">变体</h3>
+<ul>
+<li>
+<p><code>Gers&amp;Schimidhuber</code>增添了“peephole connection”，让门也接受细胞状态的输入。</p>
 </li>
-<li><p>使用“coupled”来将忘记门和输入门合二为一，一同做出忘记和输入的操作。仅仅输入新值到已经忘记旧的信息的那些状态。</p>
+<li>
+<p>使用“coupled”来将忘记门和输入门合二为一，一同做出忘记和输入的操作。仅仅输入新值到已经忘记旧的信息的那些状态。</p>
 </li>
-<li><p><strong>GRU</strong>：将忘记门和输入门合成了一个单一的更新门。混合了细胞状态和隐藏状态，和其他一些改动。最终的模型比标准的 LSTM 模型要简单，也是非常流行的变体。</p>
+<li>
+<p><strong>GRU</strong>：将忘记门和输入门合成了一个单一的更新门。混合了细胞状态和隐藏状态，和其他一些改动。最终的模型比标准的 LSTM 模型要简单，也是非常流行的变体。</p>
 <blockquote>
 <p><img src="LSTM/format,png-165362094609821.png" alt="img"></p>
 </blockquote>
 </li>
 </ul>
-<h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><ul>
+<h3 id="优势">优势</h3>
+<ul>
 <li>缓解了梯度消失、梯度爆炸的问题。</li>
 </ul>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="RNN-1"><a href="#RNN-1" class="headerlink" title="RNN"></a>RNN</h3><p>参考内容：</p>
+<h2 id="代码">代码</h2>
+<h3 id="RNN-2">RNN</h3>
+<p>参考内容：</p>
 <ul>
-<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/orangerfun/article/details/103934290"> pytorch中nn.RNN()总结</a></p>
+<li>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/orangerfun/article/details/103934290"> pytorch中nn.RNN()总结</a></p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80866196">PyTorch 学习笔记（十一）</a></p>
+<li>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80866196">PyTorch 学习笔记（十一）</a></p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45727931/article/details/114369073">RNN代码解读</a></p>
+<li>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45727931/article/details/114369073">RNN代码解读</a></p>
 </li>
 </ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://undark.gitee.io">undark</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://undark.gitee.io/posts/48c60d0d.html">https://undark.gitee.io/posts/48c60d0d.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://undark.gitee.io" target="_blank">Sunshine</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="48c60d0d.htmlundefined" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="../medias/reward/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="../medias/reward/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="../medias/reward/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="../medias/reward/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="494a92d1.html"><img class="prev-cover" src="494a92d1.htmlundefined" onerror="onerror=null;src='../medias/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">神奇网站</div></div></a></div><div class="next-post pull-right"><a href="f3a14c3d.html"><img class="next-cover" src="f3a14c3d.htmlundefined" onerror="onerror=null;src='../medias/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">python_trick</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="../medias/avatar/avatar1.jpg" onerror="this.onerror=null;this.src='../medias/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">undark</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="../archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="../tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="../categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://gitee.com/undark/"><i class="fab fa-github"></i><span>Gitee</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/sunshine-616" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="../tencent:/AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=2820130752" target="_blank" title=""><i class="fab fa-qq"></i></a><a class="social-icon" href="../mailto:2820130752@qq.com" target="_blank" title=""><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">LSTM模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RNN"><span class="toc-text">RNN</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RNN%E4%BC%98%E5%8A%BF"><span class="toc-text">RNN优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RNN%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">RNN存在的问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LSTM"><span class="toc-text">LSTM</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E6%AF%94RNN"><span class="toc-text">对比RNN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Gates"><span class="toc-text">Gates</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E4%BD%93"><span class="toc-text">变体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF"><span class="toc-text">优势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RNN-2"><span class="toc-text">RNN</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="../posts/f3450dab.html" title="白板推导-L04"><img src="../posts/f3450dab.htmlundefined" onerror="this.onerror=null;this.src='../medias/404.jpg'" alt="白板推导-L04"/></a><div class="content"><a class="title" href="../posts/f3450dab.html" title="白板推导-L04">白板推导-L04</a><time datetime="2022-07-09T00:21:03.000Z" title="发表于 2022-07-09 08:21:03">2022-07-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="../posts/4a17b156.html" title="Hello World"><img src="../posts/4a17b156.htmlundefined" onerror="this.onerror=null;this.src='../medias/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="../posts/4a17b156.html" title="Hello World">Hello World</a><time datetime="2022-07-07T09:27:19.096Z" title="发表于 2022-07-07 17:27:19">2022-07-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="../posts/6d219808.html" title="白板推导-L03"><img src="../posts/6d219808.htmlundefined" onerror="this.onerror=null;this.src='../medias/404.jpg'" alt="白板推导-L03"/></a><div class="content"><a class="title" href="../posts/6d219808.html" title="白板推导-L03">白板推导-L03</a><time datetime="2022-06-28T09:41:18.000Z" title="发表于 2022-06-28 17:41:18">2022-06-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="../posts/eb31d486.html" title="RM视觉自瞄代码上手文档"><img src="../posts/eb31d486.htmlundefined" onerror="this.onerror=null;this.src='../medias/404.jpg'" alt="RM视觉自瞄代码上手文档"/></a><div class="content"><a class="title" href="../posts/eb31d486.html" title="RM视觉自瞄代码上手文档">RM视觉自瞄代码上手文档</a><time datetime="2022-06-28T09:35:08.000Z" title="发表于 2022-06-28 17:35:08">2022-06-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="../posts/94101b71.html" title="阿凡的公众号"><img src="../posts/94101b71.htmlundefined" onerror="this.onerror=null;this.src='../medias/404.jpg'" alt="阿凡的公众号"/></a><div class="content"><a class="title" href="../posts/94101b71.html" title="阿凡的公众号">阿凡的公众号</a><time datetime="2022-06-03T03:22:10.000Z" title="发表于 2022-06-03 11:22:10">2022-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 By undark</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">无关青云路，无关诗书；无你处，无江湖。</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="../js/utils.js"></script><script src="../js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="../js/search/local-search.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://undark.gitee.io/posts/48c60d0d.html" data-id="cl5aueilm0003icj343xf7df5" data-title="LSTM" class="article-share-link">分享</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="f3a14c3d.html" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">前一篇</strong>
-      <div class="article-nav-title">
-        
-          python_trick
-        
-      </div>
-    </a>
-  
-  
-    <a href="494a92d1.html" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">神奇网站</div>
-    </a>
-  
-</nav>
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
 
-  
-</article>
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
 
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'Gw9oXBGgOShHNp7Yo8scDLgE-gzGzoHsz',
+      appKey: 'bLFEAINzYwSW97NOQenf2VJF',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">分类</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="../categories/ML/">ML</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/life/">life</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E6%97%A5%E5%B8%B8/">日常</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E7%A7%AF%E7%B4%AF/">积累</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E9%A1%B9%E7%9B%AE/">项目</a></li></ul>
-    </div>
-  </div>
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">标签</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="../tags/python/" rel="tag">-python</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/Error/" rel="tag">Error</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/matery/" rel="tag">matery</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/tips/" rel="tag">tips</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/update/" rel="tag">update</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E6%94%B6%E9%9B%86/" rel="tag">收集</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" rel="tag">文件结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC/" rel="tag">白板推导</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC%E7%B3%BB%E5%88%97/" rel="tag">白板推导系列</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/" rel="tag">知识图谱</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">标签云</h3>
-    <div class="widget tagcloud">
-      <a href="../tags/python/" style="font-size: 10px;">-python</a> <a href="../tags/Error/" style="font-size: 15px;">Error</a> <a href="../tags/matery/" style="font-size: 10px;">matery</a> <a href="../tags/tips/" style="font-size: 15px;">tips</a> <a href="../tags/update/" style="font-size: 10px;">update</a> <a href="../tags/%E6%94%B6%E9%9B%86/" style="font-size: 10px;">收集</a> <a href="../tags/%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" style="font-size: 10px;">文件结构</a> <a href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC/" style="font-size: 10px;">白板推导</a> <a href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC%E7%B3%BB%E5%88%97/" style="font-size: 20px;">白板推导系列</a> <a href="../tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/" style="font-size: 10px;">知识图谱</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">归档</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/05/">五月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/04/">四月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/03/">三月 2022</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">最新文章</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="4a17b156.html">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="6d219808.html">白板推导-L03</a>
-          </li>
-        
-          <li>
-            <a href="eb31d486.html">RM视觉自瞄代码上手文档</a>
-          </li>
-        
-          <li>
-            <a href="94101b71.html">阿凡的公众号</a>
-          </li>
-        
-          <li>
-            <a href="be6229dc.html">pyinstaller 处理 opencv-python和 mediapipe时遇到的问题</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2022 undark<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="../index.html" class="mobile-nav-link">Home</a>
-  
-    <a href="../archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="../js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="../fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="../js/script.js"></script>
-
-
-
-
-
-  </div>
-</body>
-</html>
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

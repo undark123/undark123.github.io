@@ -1,115 +1,160 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>RM视觉自瞄代码上手文档 | Sunshine</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="AutoaimVision auto-aim for RM 2022.   Ⅰ. 环境配置（以ubuntu18.04为例）   依赖库 作用    OpenCV3+ 计算机视觉常用库，用于进行图像处理ROS自带，也可单独安装OpenCV4   ROS-melodic-full ROS机器人操作系统，后续与电控通讯依赖于ROS（18.04中安装melodic版本）   ROS-melodic-ser">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>RM视觉自瞄代码上手文档 | Sunshine</title><meta name="author" content="undark"><meta name="copyright" content="undark"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Autoaim Vision auto-aim for RM 2022.   Ⅰ. 环境配置（以ubuntu18.04为例）    依赖库 作用     OpenCV3+ 计算机视觉常用库，用于进行图像处理ROS自带，也可单独安装OpenCV4   ROS-melodic-full ROS机器人操作系统，后续与电控通讯依赖于ROS（18.04中安装melodic版本）   ROS-melodic-">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RM视觉自瞄代码上手文档">
 <meta property="og:url" content="https://undark.gitee.io/posts/eb31d486.html">
 <meta property="og:site_name" content="Sunshine">
-<meta property="og:description" content="AutoaimVision auto-aim for RM 2022.   Ⅰ. 环境配置（以ubuntu18.04为例）   依赖库 作用    OpenCV3+ 计算机视觉常用库，用于进行图像处理ROS自带，也可单独安装OpenCV4   ROS-melodic-full ROS机器人操作系统，后续与电控通讯依赖于ROS（18.04中安装melodic版本）   ROS-melodic-ser">
+<meta property="og:description" content="Autoaim Vision auto-aim for RM 2022.   Ⅰ. 环境配置（以ubuntu18.04为例）    依赖库 作用     OpenCV3+ 计算机视觉常用库，用于进行图像处理ROS自带，也可单独安装OpenCV4   ROS-melodic-full ROS机器人操作系统，后续与电控通讯依赖于ROS（18.04中安装melodic版本）   ROS-melodic-">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://undark.gitee.io/posts/RM%E8%A7%86%E8%A7%89%E8%87%AA%E7%9E%84%E4%BB%A3%E7%A0%81%E4%B8%8A%E6%89%8B%E6%96%87%E6%A1%A3/15277487492d31567077707260390296-16544235408321.jpg">
-<meta property="og:image" content="https://undark.gitee.io/posts/RM%E8%A7%86%E8%A7%89%E8%87%AA%E7%9E%84%E4%BB%A3%E7%A0%81%E4%B8%8A%E6%89%8B%E6%96%87%E6%A1%A3/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1hESDE5OTEwMTEz,size_16,color_FFFFFF,t_70-16544235408333.png">
-<meta property="og:image" content="https://undark.gitee.io/posts/RM视觉自瞄代码上手文档/u=3817593420,2179655740&fm=253&fmt=auto&app=138&f=JPG-16544235408332.jpeg">
+<meta property="og:image" content="https://undark.gitee.io/posts/eb31d486.htmlundefined">
 <meta property="article:published_time" content="2022-06-28T09:35:08.000Z">
 <meta property="article:modified_time" content="2022-06-28T09:37:39.704Z">
 <meta property="article:author" content="undark">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://undark.gitee.io/posts/RM%E8%A7%86%E8%A7%89%E8%87%AA%E7%9E%84%E4%BB%A3%E7%A0%81%E4%B8%8A%E6%89%8B%E6%96%87%E6%A1%A3/15277487492d31567077707260390296-16544235408321.jpg">
-  
-    <link rel="alternate" href="../atom.xml" title="Sunshine" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="../favicon.png">
-  
-  
-  
-<link rel="stylesheet" href="../css/style.css">
+<meta name="twitter:image" content="https://undark.gitee.io/posts/eb31d486.htmlundefined"><link rel="shortcut icon" href="../medias/logo.png"><link rel="canonical" href="https://undark.gitee.io/posts/eb31d486"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="../css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'RM视觉自瞄代码上手文档',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-06-28 17:37:39'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
 
-  
-    
-<link rel="stylesheet" href="../fancybox/jquery.fancybox.min.css">
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
 
-  
-<meta name="generator" content="Hexo 6.2.0"></head>
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="../index.html" id="logo">Sunshine</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="../index.html" id="subtitle">Sunshine-616</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="../index.html">Home</a>
-        
-          <a class="main-nav-link" href="../archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="../atom.xml" title="RSS 订阅"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://undark.gitee.io"></form>
-      </div>
-    </div>
-  </div>
-</header>
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
 
-      <div class="outer">
-        <section id="main"><article id="post-RM视觉自瞄代码上手文档" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="" class="article-date">
-  <time class="dt-published" datetime="2022-06-28T09:35:08.000Z" itemprop="datePublished">2022-06-28</time>
-</a>
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
         
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      RM视觉自瞄代码上手文档
-    </h1>
-  
-
-      </header>
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
     
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="Autoaim"><a href="#Autoaim" class="headerlink" title="Autoaim"></a>Autoaim</h1><p>Vision auto-aim for <strong>RM 2022</strong>.</p>
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="../medias/avatar/avatar1.jpg" onerror="onerror=null;src='/medias/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="../archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="../tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="../categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="../index.html"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="../archives"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="../tags"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="../categories"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="../link"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="../about"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('eb31d486.htmlundefined')"><nav id="nav"><span id="blog_name"><a id="site-name" href="../index.html">Sunshine</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="../index.html"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="../archives"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="../tags"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="../categories"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="../link"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="../about"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">RM视觉自瞄代码上手文档</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-06-28T09:35:08.000Z" title="发表于 2022-06-28 17:35:08">2022-06-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-06-28T09:37:39.704Z" title="更新于 2022-06-28 17:37:39">2022-06-28</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>9分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="RM视觉自瞄代码上手文档"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>Autoaim</h1>
+<p>Vision auto-aim for <strong>RM 2022</strong>.</p>
 <p><img src="RM%E8%A7%86%E8%A7%89%E8%87%AA%E7%9E%84%E4%BB%A3%E7%A0%81%E4%B8%8A%E6%89%8B%E6%96%87%E6%A1%A3/15277487492d31567077707260390296-16544235408321.jpg" alt="pics"></p>
 <hr>
-<h2 id="Ⅰ-环境配置（以ubuntu18-04为例）"><a href="#Ⅰ-环境配置（以ubuntu18-04为例）" class="headerlink" title="Ⅰ. 环境配置（以ubuntu18.04为例）"></a>Ⅰ. 环境配置（以ubuntu18.04为例）</h2><table>
+<h2 id="Ⅰ-环境配置（以ubuntu18-04为例）">Ⅰ. 环境配置（以ubuntu18.04为例）</h2>
+<table>
 <thead>
 <tr>
 <th>依赖库</th>
 <th>作用</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>OpenCV3+</td>
 <td>计算机视觉常用库，用于进行图像处理ROS自带，也可单独安装OpenCV4</td>
 </tr>
@@ -137,8 +182,10 @@
 <td>MVS</td>
 <td>海康威视相机依赖库，用于对相机进行操作</td>
 </tr>
-</tbody></table>
-<h3 id="1-1-libtorch-1-8-0-cpu-版本安装"><a href="#1-1-libtorch-1-8-0-cpu-版本安装" class="headerlink" title="1.1 libtorch 1.8.0+cpu 版本安装"></a>1.1 libtorch 1.8.0+cpu 版本安装</h3><p><strong>1.1.1 过去报过的错：</strong></p>
+</tbody>
+</table>
+<h3 id="1-1-libtorch-1-8-0-cpu-版本安装">1.1 libtorch 1.8.0+cpu 版本安装</h3>
+<p><strong>1.1.1 过去报过的错：</strong></p>
 <p>先前曾尝试过很多版本，但都会存在libtorch和opencv4不兼容的问题。（报错如下）<img src="RM%E8%A7%86%E8%A7%89%E8%87%AA%E7%9E%84%E4%BB%A3%E7%A0%81%E4%B8%8A%E6%89%8B%E6%96%87%E6%A1%A3/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1hESDE5OTEwMTEz,size_16,color_FFFFFF,t_70-16544235408333.png" alt="报错"></p>
 <p>:carrot:<strong>报错的特征：</strong></p>
 <p>当你单独使用OpenCV时，程序能够正常运行；并且当单独使用libtorch时，程序也能够正常运行；当你的工程同时使用OpenCV+libtorch时，报了上面的错误，表现为OpenCV无法调用起来。</p>
@@ -146,8 +193,8 @@
 <p>冲突的原因可能是OpenCV编译时候的C++ABI版本和libtorch中的不同，所以建议在相同的环境下编译。</p>
 <p>:carrot:<strong>可以进行的尝试：</strong></p>
 <ul>
-<li><input disabled="" type="checkbox"> 将ROS中的OpenCV删去（或不删去也可以，但须在CMakeLists.txt里面指明OpenCV的位置）</li>
-<li><input disabled="" type="checkbox"> 下载OpenCV和libtorch的源码并在同一个环境下进行编译。</li>
+<li>[ ] 将ROS中的OpenCV删去（或不删去也可以，但须在CMakeLists.txt里面指明OpenCV的位置）</li>
+<li>[ ] 下载OpenCV和libtorch的源码并在同一个环境下进行编译。</li>
 </ul>
 <p><strong>1.1.2 问题解决：</strong></p>
 <p>为了方便，这里使用一种比较暴力 :motor_scooter: 的方法。从我的gitee中clone统一版本的libtorch，以此来解决冲突的问题。</p>
@@ -158,16 +205,21 @@
 <li>将clone下来的文件夹整个放在<code>/opt/</code>目录下。</li>
 <li>在使用libtorch时，编写CMakeLists.txt中需要包含<code>set(Torch_DIR &quot;/opt/libtorch/share/cmake/Torch&quot;)</code>否则无法编译。</li>
 </ol>
-<h3 id="1-2-Ceres-1-14"><a href="#1-2-Ceres-1-14" class="headerlink" title="1.2 Ceres 1.14"></a>1.2 Ceres 1.14</h3><p>ceres安装过程未遇到什么问题，但是现在已经有了2.1版本，未避免出现其他的问题，这里统一使用1.14版本。（当然也可以自行尝试2.1或是newer的版本是否向下兼容）</p>
+<h3 id="1-2-Ceres-1-14">1.2 Ceres 1.14</h3>
+<p>ceres安装过程未遇到什么问题，但是现在已经有了2.1版本，未避免出现其他的问题，这里统一使用1.14版本。（当然也可以自行尝试2.1或是newer的版本是否向下兼容）</p>
 <p>:carrot:<strong>具体步骤如下：</strong></p>
 <ol>
-<li><p><code>git clone https://gitee.com/undark/ceres-solver-1.14.0.git</code></p>
+<li>
+<p><code>git clone https://gitee.com/undark/ceres-solver-1.14.0.git</code></p>
 </li>
-<li><p>下载相关依赖：</p>
+<li>
+<p>下载相关依赖：</p>
 <ol>
-<li><p>检查自己是否已经安装<code>cmake</code>，如果没有，则执行<code>sudo apt install cmake</code>来下载。</p>
+<li>
+<p>检查自己是否已经安装<code>cmake</code>，如果没有，则执行<code>sudo apt install cmake</code>来下载。</p>
 </li>
-<li><p>代码如下</p>
+<li>
+<p>代码如下</p>
 <pre class="line-numbers language-none"><code class="language-none"># google-glog + gflags
 sudo apt-get install libgoogle-glog-dev libgflags-dev
 # Use ATLAS for BLAS &amp; LAPACK
@@ -175,10 +227,12 @@ sudo apt-get install libatlas-base-dev
 # Eigen3
 sudo apt-get install libeigen3-dev
 # SuiteSparse and CXSparse (optional)
-sudo apt-get install libsuitesparse-dev<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+sudo apt-get install libsuitesparse-dev<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
 </ol>
 </li>
-<li><p>接下来进行install过程。</p>
+<li>
+<p>接下来进行install过程。</p>
 <ol>
 <li>进入到clone的文件夹<code>ceres-solver-1.14.0</code>的同级目录下。</li>
 <li>建议在clone下的文件夹中，使用<code>rm -rf .git</code>脱离git，否则可能在后续的cmake时候会报错。</li>
@@ -192,46 +246,62 @@ sudo apt-get install libsuitesparse-dev<span aria-hidden="true" class="line-numb
 <p>至此，ceres安装完成。之后可以在网上搜索ceres相关的应用案例自己运行下。</p>
 </li>
 </ol>
-<h3 id="1-3-ROS-melodic-full"><a href="#1-3-ROS-melodic-full" class="headerlink" title="1.3 ROS-melodic-full"></a>1.3 ROS-melodic-full</h3><h3 id=""><a href="#" class="headerlink" title=""></a><img src="RM视觉自瞄代码上手文档/u=3817593420,2179655740&fm=253&fmt=auto&app=138&f=JPG-16544235408332.jpeg" alt="ros" style="zoom:67%;" /></h3><p>网络上ROS的安装教程很多，这里放一个成功安装的教程。<a target="_blank" rel="noopener" href="https://blog.csdn.net/c417469898/article/details/106410305">tutorial</a></p>
-<h3 id="1-4-ROS-melodic-serial"><a href="#1-4-ROS-melodic-serial" class="headerlink" title="1.4 ROS-melodic-serial"></a>1.4 ROS-melodic-serial</h3><p>这是一个需要自己安装的串口包，没有则使用<code>sudo apt install ros-melodic-serial</code>进行安装。</p>
-<h3 id="1-5-MVS"><a href="#1-5-MVS" class="headerlink" title="1.5 MVS"></a>1.5 MVS</h3><p>安装步骤：</p>
+<h3 id="1-3-ROS-melodic-full">1.3 ROS-melodic-full</h3>
+<h3 id="img-src-RM视觉自瞄代码上手文档-u-3817593420-2179655740-fm-253-fmt-auto-app-138-f-JPG-16544235408332-jpeg-alt-ros-style-zoom-67"><img src="RM视觉自瞄代码上手文档/u=3817593420,2179655740&fm=253&fmt=auto&app=138&f=JPG-16544235408332.jpeg" alt="ros" style="zoom:67%;" /></h3>
+<p>网络上ROS的安装教程很多，这里放一个成功安装的教程。<a target="_blank" rel="noopener" href="https://blog.csdn.net/c417469898/article/details/106410305">tutorial</a></p>
+<h3 id="1-4-ROS-melodic-serial">1.4 ROS-melodic-serial</h3>
+<p>这是一个需要自己安装的串口包，没有则使用<code>sudo apt install ros-melodic-serial</code>进行安装。</p>
+<h3 id="1-5-MVS">1.5 MVS</h3>
+<p>安装步骤：</p>
 <ol>
-<li><p><code>git clone https://gitee.com/undark/mvs.git</code></p>
+<li>
+<p><code>git clone https://gitee.com/undark/mvs.git</code></p>
 </li>
-<li><p><code>cd /mvs/</code></p>
+<li>
+<p><code>cd /mvs/</code></p>
 </li>
-<li><p><code>sudo su</code>或<code>su root</code>获得root privileges</p>
+<li>
+<p><code>sudo su</code>或<code>su root</code>获得root privileges</p>
 </li>
-<li><p><code>source ./setup.sh</code></p>
+<li>
+<p><code>source ./setup.sh</code></p>
 </li>
-<li><p>在 <code>/opt/</code>文件夹中出现<code>MVS</code></p>
+<li>
+<p>在 <code>/opt/</code>文件夹中出现<code>MVS</code></p>
 </li>
-<li><p>在编译示例程序之前，确认LD_LIBRARY_PATH和MVCAM_COMMON_RUNENV两个环境变量已经生效.</p>
-<pre><code>echo $MVCAM_COMMON_RUNENV
-输出：/opt/MVS/lib
-</code></pre>
-<p>如果当前环境不存在以上两个环境变量或者变量中不包含&#x2F;opt&#x2F;MVS&#x2F;lib相关值时，需要跳转到安装包所在路径，并输入：<br><code>source ./set_env_path.sh</code></p>
+<li>
+<p>在编译示例程序之前，确认LD_LIBRARY_PATH和MVCAM_COMMON_RUNENV两个环境变量已经生效.</p>
+<p>echo $MVCAM_COMMON_RUNENV<br>
+输出：/opt/MVS/lib</p>
+<p>如果当前环境不存在以上两个环境变量或者变量中不包含/opt/MVS/lib相关值时，需要跳转到安装包所在路径，并输入：<br>
+<code>source ./set_env_path.sh</code></p>
 </li>
-<li><p>检验：</p>
-<p>在<code>/opt/MVS/bin/</code>目录下打开terminal，执行操作<code>./MVSPlayer</code>	</p>
+<li>
+<p>检验：</p>
+<p>在<code>/opt/MVS/bin/</code>目录下打开terminal，执行操作<code>./MVSPlayer</code></p>
 <p>之后出现MVS客户端图形化界面。即证明MVS安装完成。</p>
 </li>
 </ol>
 <hr>
-<h2 id="Ⅱ-代码快速上手"><a href="#Ⅱ-代码快速上手" class="headerlink" title="Ⅱ. 代码快速上手"></a>Ⅱ. 代码快速上手</h2><h3 id="2-1-前言"><a href="#2-1-前言" class="headerlink" title="2.1 前言"></a>2.1 前言</h3><p>目前所使用的代码是在不断的优化的，但结构如Ⅰ<a href="##Ⅰ.文件结构说明">文件结构说明</a>中所述,在一段时间内不会发生很大的改变。</p>
+<h2 id="Ⅱ-代码快速上手">Ⅱ. 代码快速上手</h2>
+<h3 id="2-1-前言">2.1 前言</h3>
+<p>目前所使用的代码是在不断的优化的，但结构如Ⅰ<a href="##Ⅰ.文件结构说明">文件结构说明</a>中所述,在一段时间内不会发生很大的改变。</p>
 <p>:carrot: <font color=green>遇到自己的机器上面的代码与最新版本的代码不同的问题</font>,如果想要将本机修改或未修改的内容全部覆盖掉时，需要进行以下操作：</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">git fetch <span class="token operator">-</span><span class="token operator">-</span><span class="token builtin">all</span>
 git reset <span class="token operator">-</span><span class="token operator">-</span>hard origin<span class="token operator">/</span>master  <span class="token comment"># git reset不加hard只会丢弃暂存区的变更，加上hard会连同工作区的也丢弃。</span>
 git pull<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
 <p>经过上述操作可以将本地代码强制覆盖，与远端仓库保持一致。</p>
-<h3 id="2-2-代码上手步骤"><a href="#2-2-代码上手步骤" class="headerlink" title="2.2 代码上手步骤"></a>2.2 代码上手步骤</h3><ol>
-<li><p>依照<a href="##Ⅱ. 依赖库安装(以ubuntu18.04为例)">依赖库安装步骤</a>，将环境配置完成。</p>
+<h3 id="2-2-代码上手步骤">2.2 代码上手步骤</h3>
+<ol>
+<li>
+<p>依照<a href="##Ⅱ. 依赖库安装(以ubuntu18.04为例)">依赖库安装步骤</a>，将环境配置完成。</p>
 </li>
-<li><p>从 远端仓库克隆代码至某一位置。</p>
+<li>
+<p>从 远端仓库克隆代码至某一位置。</p>
 <p><code>git clone https://gitee.com/newsun-boki/Vision_bak.git</code></p>
 </li>
-<li><p>进入到<code>Vison_bak</code>文件夹中，此时文件夹中的结构应为：</p>
+<li>
+<p>进入到<code>Vison_bak</code>文件夹中，此时文件夹中的结构应为：</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python">Vision_bak
 <span class="token operator">|</span><span class="token operator">-</span><span class="token operator">-</span> <span class="token punctuation">.</span>vscode
 <span class="token operator">|</span><span class="token operator">-</span><span class="token operator">-</span> model
@@ -241,27 +311,35 @@ git pull<span aria-hidden="true" class="line-numbers-rows"><span></span><span></
 <span class="token operator">|</span><span class="token operator">-</span><span class="token operator">-</span> README<span class="token punctuation">.</span>md
 `<span class="token operator">-</span><span class="token operator">-</span> new_add<span class="token punctuation">.</span>md<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
-<li><p>使用<code>catkin_make</code>操作编译该项目工程包，之后出现<code>Built target Frame</code>说明编译成功。</p>
+<li>
+<p>使用<code>catkin_make</code>操作编译该项目工程包，之后出现<code>Built target Frame</code>说明编译成功。</p>
 <p>:carrot:若在编译过程中出现问题，尽量自行查找解决问题，或找我问下。</p>
 </li>
-<li><p>使用<code>source devel/setup.sh</code>进行ROS程序注册。</p>
+<li>
+<p>使用<code>source devel/setup.sh</code>进行ROS程序注册。</p>
 <p>:carrot:若不想每次都重新注册，可以将<code>source devel/setup.sh</code> 的指令添加至home目录下      的<code>.bashrc</code>文件中，具体操作自行搜索。</p>
 </li>
-<li><p>使用<code>roslaunch armor test.launch</code>来运行测试案例的launch文件。</p>
+<li>
+<p>使用<code>roslaunch armor test.launch</code>来运行测试案例的launch文件。</p>
 </li>
-<li><p>其他操作：</p>
+<li>
+<p>其他操作：</p>
 <ol>
-<li><p>更换敌人颜色：</p>
+<li>
+<p>更换敌人颜色：</p>
 <p>:carrot:修改<code>src/armor/config/</code>中的参数文件。若为英雄则修改<code>bullet_42.yaml</code>中的<code>init_color_blue</code>，若为测试或是步兵则修改<code>bullet_17.yaml</code>中的<code>init_color_blue</code>。</p>
 </li>
-<li><p>选择是否显示处理后的有目标图像：</p>
+<li>
+<p>选择是否显示处理后的有目标图像：</p>
 <p>:carrot:修改<code>src/armor/include/aim_deps/AimDeps.hpp</code>文件中的宏定义：<code>#define DISPLAY_TARGETS</code>。若显示则保留，若不显示则将这一行注释掉。</p>
 </li>
 </ol>
 </li>
 </ol>
 <hr>
-<h2 id="Ⅲ-文件结构说明"><a href="#Ⅲ-文件结构说明" class="headerlink" title="Ⅲ. 文件结构说明"></a>Ⅲ. 文件结构说明</h2><h3 id="3-1-一级文件结构"><a href="#3-1-一级文件结构" class="headerlink" title="3.1 一级文件结构"></a>3.1 一级文件结构</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c">src
+<h2 id="Ⅲ-文件结构说明">Ⅲ. 文件结构说明</h2>
+<h3 id="3-1-一级文件结构">3.1 一级文件结构</h3>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">src
 <span class="token operator">|</span><span class="token operator">--</span> <span class="token function">armor</span><span class="token punctuation">(</span>为主要内容<span class="token punctuation">)</span>
 <span class="token operator">|</span><span class="token operator">--</span> serial
 <span class="token operator">|</span><span class="token operator">--</span> serial_com
@@ -271,8 +349,9 @@ git pull<span aria-hidden="true" class="line-numbers-rows"><span></span><span></
 <span class="token operator">|</span><span class="token operator">--</span> CMakeLists<span class="token punctuation">.</span>txt
 <span class="token operator">|</span><span class="token operator">--</span> data_robust<span class="token punctuation">.</span>txt
 `<span class="token operator">--</span> plotCurve<span class="token punctuation">.</span>py<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="3-2-armor包—自瞄代码的核心板块"><a href="#3-2-armor包—自瞄代码的核心板块" class="headerlink" title="3.2 armor包—自瞄代码的核心板块"></a>3.2 armor包—自瞄代码的核心板块</h3><h4 id="（一）、armor包文件结构-仅包含代码部分"><a href="#（一）、armor包文件结构-仅包含代码部分" class="headerlink" title="（一）、armor包文件结构(仅包含代码部分)"></a>（一）、<code>armor</code>包文件结构(仅包含代码部分)</h4><pre class="line-numbers language-none"><code class="language-none">armor
+<h3 id="3-2-armor包—自瞄代码的核心板块">3.2 armor包—自瞄代码的核心板块</h3>
+<h4 id="（一）、armor包文件结构-仅包含代码部分">（一）、<code>armor</code>包文件结构(仅包含代码部分)</h4>
+<pre class="line-numbers language-none"><code class="language-none">armor
 |-- Frame.cc
 |-- config # 参数文件,Ⅳ中详细说明
 |
@@ -301,9 +380,8 @@ git pull<span aria-hidden="true" class="line-numbers-rows"><span></span><span></
     |-- aim_pre
     &#96;-- aim_rec
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-<h4 id="（二）、内容"><a href="#（二）、内容" class="headerlink" title="（二）、内容"></a>（二）、内容</h4><p> <strong>1、<code>aim_auto</code></strong></p>
+<h4 id="（二）、内容">（二）、内容</h4>
+<p><strong>1、<code>aim_auto</code></strong></p>
 <pre class="line-numbers language-none"><code class="language-none">include
 |-- AimAuto.hpp
 |-- ArmorPlate.hpp
@@ -315,7 +393,6 @@ src
 |-- AimAuto.cc
 |-- ArmorPlate.cc
 &#96;-- LightMatch.cc<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p><strong>2、<code>aim_cam</code></strong></p>
 <pre class="line-numbers language-none"><code class="language-none">include
 |-- CameraCtl.hpp
@@ -325,14 +402,12 @@ src
 src
 |-- CameraCtl.cc
 &#96;-- HPG.cc<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p><strong>3、<code>aim_dec</code></strong></p>
 <pre class="line-numbers language-none"><code class="language-none">include
 &#96;-- Armordecision.hpp
 
 src
 &#96;-- Armordecision.cc<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p><strong>4、<code>aim_deps</code></strong></p>
 <pre class="line-numbers language-none"><code class="language-none">include
 |-- AimDeps.hpp
@@ -342,19 +417,16 @@ src
 
 src
 &#96;-- Paths.cc<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p><strong>5、<code>aim_energy</code></strong></p>
 <pre class="line-numbers language-none"><code class="language-none">include
 |-- WM_Param.hpp
 &#96;-- WindMill.hpp<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
 <p><strong>6、<code>aim_pos</code></strong></p>
 <pre class="line-numbers language-none"><code class="language-none">include
 &#96;-- GetPos.hpp
 
 src
 &#96;-- GetPos.cc<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p><strong>7、<code>aim_pre</code></strong></p>
 <pre class="line-numbers language-none"><code class="language-none">include
 |-- Predict.hpp
@@ -362,21 +434,18 @@ src
 
 src
 &#96;-- Predict.cc<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p><strong>8、<code>aim_rec</code></strong></p>
 <pre class="line-numbers language-none"><code class="language-none">include
 &#96;-- NumRec.hpp
 
 src
 &#96;-- NumRec.cc<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p><strong>9、<code>config</code></strong></p>
 <pre class="line-numbers language-none"><code class="language-none">config
 |-- WM_Param.yaml
 |-- aim_deps_config.yaml
 |-- bullet_17.yaml
 &#96;-- bullet_42.yaml<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p><strong>10、<code>launch</code></strong></p>
 <pre class="line-numbers language-none"><code class="language-none">launch
 |-- hero.launch
@@ -384,17 +453,19 @@ src
 |-- serrial_gdb.launch
 |-- sim_gdb.launch
 &#96;-- test.launch<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <hr>
-<h2 id="Ⅳ-config-参数内容"><a href="#Ⅳ-config-参数内容" class="headerlink" title="Ⅳ. config 参数内容"></a>Ⅳ. config 参数内容</h2><p>config 文件夹中包含多个yaml文件,各个文件中包含了程序的部分可调参数，具体情况如下。</p>
-<h3 id="4-1-config-文件组成"><a href="#4-1-config-文件组成" class="headerlink" title="4.1 config 文件组成"></a>4.1 config 文件组成</h3><table>
+<h2 id="Ⅳ-config-参数内容">Ⅳ. config 参数内容</h2>
+<p>config 文件夹中包含多个yaml文件,各个文件中包含了程序的部分可调参数，具体情况如下。</p>
+<h3 id="4-1-config-文件组成">4.1 config 文件组成</h3>
+<table>
 <thead>
 <tr>
 <th>文件名称</th>
 <th>内容</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>aim_deps_config.yaml</td>
 <td>自瞄相关通用参数</td>
 </tr>
@@ -414,83 +485,89 @@ src
 <td>WM_Param.yaml</td>
 <td>打符参数</td>
 </tr>
-</tbody></table>
-<h3 id="4-2-各个文件参数内容"><a href="#4-2-各个文件参数内容" class="headerlink" title="4.2 各个文件参数内容"></a>4.2 各个文件参数内容</h3><ul>
-<li><p><code>aim_deps_config.yaml</code></p>
+</tbody>
+</table>
+<h3 id="4-2-各个文件参数内容">4.2 各个文件参数内容</h3>
+<ul>
+<li>
+<p><code>aim_deps_config.yaml</code></p>
 <table>
 <thead>
 <tr>
-<th align="left">参数</th>
+<th style="text-align:left">参数</th>
 <th>意义</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">use_prediction</td>
+<tbody>
+<tr>
+<td style="text-align:left">use_prediction</td>
 <td>是否使用预测</td>
 </tr>
 <tr>
-<td align="left">use_antispin</td>
+<td style="text-align:left">use_antispin</td>
 <td>是否开启反陀螺</td>
 </tr>
 <tr>
-<td align="left">hit_tower_mode</td>
+<td style="text-align:left">hit_tower_mode</td>
 <td>打前哨站中部旋转装甲板模式，主要应该由电控决定，在此仅为调试辅助</td>
 </tr>
 <tr>
-<td align="left">red&#x2F;blue_thresh_low</td>
+<td style="text-align:left">red/blue_thresh_low</td>
 <td>二值图threshold下阈值</td>
 </tr>
 <tr>
-<td align="left">red&#x2F;blue_r_balance</td>
-<td>RED&#x2F;BLUE_白平衡（红色通道）</td>
+<td style="text-align:left">red/blue_r_balance</td>
+<td>RED/BLUE_白平衡（红色通道）</td>
 </tr>
 <tr>
-<td align="left">red&#x2F;blue_g_balance</td>
-<td>RED&#x2F;BLUE_白平衡（green通道）</td>
+<td style="text-align:left">red/blue_g_balance</td>
+<td>RED/BLUE_白平衡（green通道）</td>
 </tr>
 <tr>
-<td align="left">red&#x2F;blue_b_balance</td>
-<td>RED&#x2F;BLUE_白平衡（蓝色通道）</td>
+<td style="text-align:left">red/blue_b_balance</td>
+<td>RED/BLUE_白平衡（蓝色通道）</td>
 </tr>
 <tr>
-<td align="left">red&#x2F;blue_filter</td>
-<td>RED&#x2F;BLUE_环境或血条导致的杂灯条过滤阈值</td>
+<td style="text-align:left">red/blue_filter</td>
+<td>RED/BLUE_环境或血条导致的杂灯条过滤阈值</td>
 </tr>
 <tr>
-<td align="left">f_x&#x2F;y,c_x&#x2F;y,k_1&#x2F;2,p_1&#x2F;2</td>
+<td style="text-align:left">f_x/y,c_x/y,k_1/2,p_1/2</td>
 <td>相机内参矩阵和畸变系数</td>
 </tr>
 <tr>
-<td align="left">num_light</td>
+<td style="text-align:left">num_light</td>
 <td>数字识别阈值</td>
 </tr>
 <tr>
-<td align="left">predict_mode</td>
+<td style="text-align:left">predict_mode</td>
 <td>预测模式</td>
 </tr>
 <tr>
-<td align="left">coeff_v</td>
+<td style="text-align:left">coeff_v</td>
 <td>水平左右移动预测系数初始值 - 速度</td>
 </tr>
 <tr>
-<td align="left">coeff_a</td>
+<td style="text-align:left">coeff_a</td>
 <td>水平左右移动预测系数初始值 - 加速度(一般来说，加速度预测系数需要比速度预测系数大)</td>
 </tr>
 <tr>
-<td align="left">acc_thresh</td>
+<td style="text-align:left">acc_thresh</td>
 <td>加速度绝对值认定为 [较小]的阈值</td>
 </tr>
 <tr>
-<td align="left">speed_thresh</td>
+<td style="text-align:left">speed_thresh</td>
 <td>速度绝对值认定为 [较小]的阈值</td>
 </tr>
 <tr>
-<td align="left">HSV_parameter</td>
+<td style="text-align:left">HSV_parameter</td>
 <td>HSV相关参数</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 </li>
-<li><p><code>bullet_17.yaml</code>&amp;<code>bullet_42.yaml</code></p>
+<li>
+<p><code>bullet_17.yaml</code>&amp;<code>bullet_42.yaml</code></p>
 <table>
 <thead>
 <tr>
@@ -498,7 +575,8 @@ src
 <th>意义</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>cut_ratio</td>
 <td>从上往下开始裁减比例</td>
 </tr>
@@ -522,9 +600,11 @@ src
 <td>video_path</td>
 <td>若视频流来自文件,则value为视频地址</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 </li>
-<li><p><code>init_color_blue.txt</code></p>
+<li>
+<p><code>init_color_blue.txt</code></p>
 <ul>
 <li>该文件中包含的value为颜色(1为蓝,0为红)。</li>
 <li>当 current_status 和 old_status 对应的颜色不同时会进行修改。</li>
@@ -533,7 +613,8 @@ src
 </li>
 </ul>
 <ul>
-<li><p><code>WM_Param.yaml</code></p>
+<li>
+<p><code>WM_Param.yaml</code></p>
 <table>
 <thead>
 <tr>
@@ -541,40 +622,41 @@ src
 <th>意义</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>s_armor_min&#x2F;max</td>
+<tbody>
+<tr>
+<td>s_armor_min/max</td>
 <td></td>
 </tr>
 <tr>
-<td>armor_ratio_min&#x2F;max</td>
+<td>armor_ratio_min/max</td>
 <td></td>
 </tr>
 <tr>
-<td>s_armor_ratio_min&#x2F;max</td>
+<td>s_armor_ratio_min/max</td>
 <td></td>
 </tr>
 <tr>
-<td>s_R_min&#x2F;max</td>
+<td>s_R_min/max</td>
 <td></td>
 </tr>
 <tr>
-<td>R_ratio_min&#x2F;max</td>
+<td>R_ratio_min/max</td>
 <td></td>
 </tr>
 <tr>
-<td>s_R_ratio_min&#x2F;max</td>
+<td>s_R_ratio_min/max</td>
 <td></td>
 </tr>
 <tr>
-<td>s_leaf_min&#x2F;max</td>
+<td>s_leaf_min/max</td>
 <td></td>
 </tr>
 <tr>
-<td>fin_ratio_min&#x2F;max</td>
+<td>fin_ratio_min/max</td>
 <td></td>
 </tr>
 <tr>
-<td>s_fin_ratio_min&#x2F;max</td>
+<td>s_fin_ratio_min/max</td>
 <td></td>
 </tr>
 <tr>
@@ -617,11 +699,14 @@ src
 <td>fai</td>
 <td>速度函数参数</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 </li>
 </ul>
 <hr>
-<h2 id="Ⅴ-通信协议"><a href="#Ⅴ-通信协议" class="headerlink" title="Ⅴ. 通信协议"></a>Ⅴ. 通信协议</h2><h3 id="5-1-电控通信协议"><a href="#5-1-电控通信协议" class="headerlink" title="5.1 电控通信协议"></a>5.1 电控通信协议</h3><p>十三字节基础版本，包含：</p>
+<h2 id="Ⅴ-通信协议">Ⅴ. 通信协议</h2>
+<h3 id="5-1-电控通信协议">5.1 电控通信协议</h3>
+<p>十三字节基础版本，包含：</p>
 <table>
 <thead>
 <tr>
@@ -631,22 +716,23 @@ src
 <th>视觉给电控</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0&#x2F;1&#x2F;2&#x2F;3 4Bytes</td>
+<tbody>
+<tr>
+<td>0/1/2/3 4Bytes</td>
 <td>float</td>
 <td>电控IMU pitch（度）（哨兵可以用编码器）</td>
 <td>相机坐标系最优目标位置x（mm）</td>
 </tr>
 <tr>
-<td>4&#x2F;5&#x2F;6&#x2F;7 4Bytes</td>
+<td>4/5/6/7 4Bytes</td>
 <td>float</td>
 <td>电控IMU yaw（度）（哨兵可以用编码器）</td>
 <td>相机坐标系最优目标位置y（mm）</td>
 </tr>
 <tr>
-<td>8&#x2F;9&#x2F;10&#x2F;11 4Bytes</td>
+<td>8/9/10/11 4Bytes</td>
 <td>float</td>
-<td>电控弹速（m&#x2F;s）</td>
+<td>电控弹速（m/s）</td>
 <td>相机坐标系最优目标位置z（mm）</td>
 </tr>
 <tr>
@@ -655,10 +741,12 @@ src
 <td>复杂，1.2详细说明</td>
 <td>高4位为当前锁定的车号。低四位0000</td>
 </tr>
-</tbody></table>
-<h3 id="5-2-电控给视觉的控制信息status"><a href="#5-2-电控给视觉的控制信息status" class="headerlink" title="5.2 电控给视觉的控制信息status"></a>5.2 电控给视觉的控制信息status</h3><p><code>Frame.cc</code> 下有相应的status判断逻辑：</p>
+</tbody>
+</table>
+<h3 id="5-2-电控给视觉的控制信息status">5.2 电控给视觉的控制信息status</h3>
+<p><code>Frame.cc</code> 下有相应的status判断逻辑：</p>
 <ul>
-<li>status &#x2F; 5 &#x3D;&#x3D; 1 时，击打目标为blue；status &#x2F; 5 &#x3D;&#x3D; 0 时，击打目标为red。</li>
+<li>status / 5 == 1 时，击打目标为blue；status / 5 == 0 时，击打目标为red。</li>
 <li>以下数值为 <strong>status % 5</strong> 得到的值。</li>
 </ul>
 <table>
@@ -668,7 +756,8 @@ src
 <th>意义</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>0</td>
 <td>自瞄模式，关预测</td>
 </tr>
@@ -688,158 +777,56 @@ src
 <td>4</td>
 <td>打旋转前哨站</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <hr>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://undark.gitee.io">undark</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://undark.gitee.io/posts/eb31d486.html">https://undark.gitee.io/posts/eb31d486.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://undark.gitee.io" target="_blank">Sunshine</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="eb31d486.htmlundefined" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="../medias/reward/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="../medias/reward/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="../medias/reward/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="../medias/reward/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="94101b71.html"><img class="prev-cover" src="94101b71.htmlundefined" onerror="onerror=null;src='../medias/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">阿凡的公众号</div></div></a></div><div class="next-post pull-right"><a href="6d219808.html"><img class="next-cover" src="6d219808.htmlundefined" onerror="onerror=null;src='../medias/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">白板推导-L03</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="../medias/avatar/avatar1.jpg" onerror="this.onerror=null;this.src='../medias/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">undark</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="../archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="../tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="../categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://gitee.com/undark/"><i class="fab fa-github"></i><span>Gitee</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/sunshine-616" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="../tencent:/AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=2820130752" target="_blank" title=""><i class="fab fa-qq"></i></a><a class="social-icon" href="../mailto:2820130752@qq.com" target="_blank" title=""><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">Autoaim</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%85%A0-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%EF%BC%88%E4%BB%A5ubuntu18-04%E4%B8%BA%E4%BE%8B%EF%BC%89"><span class="toc-text">Ⅰ. 环境配置（以ubuntu18.04为例）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-libtorch-1-8-0-cpu-%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85"><span class="toc-text">1.1 libtorch 1.8.0+cpu 版本安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Ceres-1-14"><span class="toc-text">1.2 Ceres 1.14</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-ROS-melodic-full"><span class="toc-text">1.3 ROS-melodic-full</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#img-src-RM%E8%A7%86%E8%A7%89%E8%87%AA%E7%9E%84%E4%BB%A3%E7%A0%81%E4%B8%8A%E6%89%8B%E6%96%87%E6%A1%A3-u-3817593420-2179655740-fm-253-fmt-auto-app-138-f-JPG-16544235408332-jpeg-alt-ros-style-zoom-67"><span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-ROS-melodic-serial"><span class="toc-text">1.4 ROS-melodic-serial</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-MVS"><span class="toc-text">1.5 MVS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%85%A1-%E4%BB%A3%E7%A0%81%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B"><span class="toc-text">Ⅱ. 代码快速上手</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%89%8D%E8%A8%80"><span class="toc-text">2.1 前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E4%BB%A3%E7%A0%81%E4%B8%8A%E6%89%8B%E6%AD%A5%E9%AA%A4"><span class="toc-text">2.2 代码上手步骤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%85%A2-%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E8%AF%B4%E6%98%8E"><span class="toc-text">Ⅲ. 文件结构说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%B8%80%E7%BA%A7%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-text">3.1 一级文件结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-armor%E5%8C%85%E2%80%94%E8%87%AA%E7%9E%84%E4%BB%A3%E7%A0%81%E7%9A%84%E6%A0%B8%E5%BF%83%E6%9D%BF%E5%9D%97"><span class="toc-text">3.2 armor包—自瞄代码的核心板块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%88%E4%B8%80%EF%BC%89%E3%80%81armor%E5%8C%85%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84-%E4%BB%85%E5%8C%85%E5%90%AB%E4%BB%A3%E7%A0%81%E9%83%A8%E5%88%86"><span class="toc-text">（一）、armor包文件结构(仅包含代码部分)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%88%E4%BA%8C%EF%BC%89%E3%80%81%E5%86%85%E5%AE%B9"><span class="toc-text">（二）、内容</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%85%A3-config-%E5%8F%82%E6%95%B0%E5%86%85%E5%AE%B9"><span class="toc-text">Ⅳ. config 参数内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-config-%E6%96%87%E4%BB%B6%E7%BB%84%E6%88%90"><span class="toc-text">4.1 config 文件组成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%90%84%E4%B8%AA%E6%96%87%E4%BB%B6%E5%8F%82%E6%95%B0%E5%86%85%E5%AE%B9"><span class="toc-text">4.2 各个文件参数内容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%85%A4-%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="toc-text">Ⅴ. 通信协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E7%94%B5%E6%8E%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="toc-text">5.1 电控通信协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E7%94%B5%E6%8E%A7%E7%BB%99%E8%A7%86%E8%A7%89%E7%9A%84%E6%8E%A7%E5%88%B6%E4%BF%A1%E6%81%AFstatus"><span class="toc-text">5.2 电控给视觉的控制信息status</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="../posts/f3450dab.html" title="白板推导-L04"><img src="../posts/f3450dab.htmlundefined" onerror="this.onerror=null;this.src='../medias/404.jpg'" alt="白板推导-L04"/></a><div class="content"><a class="title" href="../posts/f3450dab.html" title="白板推导-L04">白板推导-L04</a><time datetime="2022-07-09T00:21:03.000Z" title="发表于 2022-07-09 08:21:03">2022-07-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="../posts/4a17b156.html" title="Hello World"><img src="../posts/4a17b156.htmlundefined" onerror="this.onerror=null;this.src='../medias/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="../posts/4a17b156.html" title="Hello World">Hello World</a><time datetime="2022-07-07T09:27:19.096Z" title="发表于 2022-07-07 17:27:19">2022-07-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="../posts/6d219808.html" title="白板推导-L03"><img src="../posts/6d219808.htmlundefined" onerror="this.onerror=null;this.src='../medias/404.jpg'" alt="白板推导-L03"/></a><div class="content"><a class="title" href="../posts/6d219808.html" title="白板推导-L03">白板推导-L03</a><time datetime="2022-06-28T09:41:18.000Z" title="发表于 2022-06-28 17:41:18">2022-06-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="../posts/eb31d486.html" title="RM视觉自瞄代码上手文档"><img src="../posts/eb31d486.htmlundefined" onerror="this.onerror=null;this.src='../medias/404.jpg'" alt="RM视觉自瞄代码上手文档"/></a><div class="content"><a class="title" href="../posts/eb31d486.html" title="RM视觉自瞄代码上手文档">RM视觉自瞄代码上手文档</a><time datetime="2022-06-28T09:35:08.000Z" title="发表于 2022-06-28 17:35:08">2022-06-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="../posts/94101b71.html" title="阿凡的公众号"><img src="../posts/94101b71.htmlundefined" onerror="this.onerror=null;this.src='../medias/404.jpg'" alt="阿凡的公众号"/></a><div class="content"><a class="title" href="../posts/94101b71.html" title="阿凡的公众号">阿凡的公众号</a><time datetime="2022-06-03T03:22:10.000Z" title="发表于 2022-06-03 11:22:10">2022-06-03</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 By undark</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">无关青云路，无关诗书；无你处，无江湖。</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="../js/utils.js"></script><script src="../js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="../js/search/local-search.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://undark.gitee.io/posts/eb31d486.html" data-id="cl5aueilt0008icj3gzukbw0w" data-title="RM视觉自瞄代码上手文档" class="article-share-link">分享</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="6d219808.html" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">前一篇</strong>
-      <div class="article-nav-title">
-        
-          白板推导-L03
-        
-      </div>
-    </a>
-  
-  
-    <a href="94101b71.html" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">阿凡的公众号</div>
-    </a>
-  
-</nav>
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
 
-  
-</article>
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
 
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'Gw9oXBGgOShHNp7Yo8scDLgE-gzGzoHsz',
+      appKey: 'bLFEAINzYwSW97NOQenf2VJF',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">分类</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="../categories/ML/">ML</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/blog/">blog</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/life/">life</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E6%97%A5%E5%B8%B8/">日常</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/">知识图谱</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E7%A7%AF%E7%B4%AF/">积累</a></li><li class="category-list-item"><a class="category-list-link" href="../categories/%E9%A1%B9%E7%9B%AE/">项目</a></li></ul>
-    </div>
-  </div>
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">标签</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="../tags/python/" rel="tag">-python</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/Error/" rel="tag">Error</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/matery/" rel="tag">matery</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/tips/" rel="tag">tips</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/update/" rel="tag">update</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E6%94%B6%E9%9B%86/" rel="tag">收集</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" rel="tag">文件结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC/" rel="tag">白板推导</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC%E7%B3%BB%E5%88%97/" rel="tag">白板推导系列</a></li><li class="tag-list-item"><a class="tag-list-link" href="../tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/" rel="tag">知识图谱</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">标签云</h3>
-    <div class="widget tagcloud">
-      <a href="../tags/python/" style="font-size: 10px;">-python</a> <a href="../tags/Error/" style="font-size: 15px;">Error</a> <a href="../tags/matery/" style="font-size: 10px;">matery</a> <a href="../tags/tips/" style="font-size: 15px;">tips</a> <a href="../tags/update/" style="font-size: 10px;">update</a> <a href="../tags/%E6%94%B6%E9%9B%86/" style="font-size: 10px;">收集</a> <a href="../tags/%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84/" style="font-size: 10px;">文件结构</a> <a href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC/" style="font-size: 10px;">白板推导</a> <a href="../tags/%E7%99%BD%E6%9D%BF%E6%8E%A8%E5%AF%BC%E7%B3%BB%E5%88%97/" style="font-size: 20px;">白板推导系列</a> <a href="../tags/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1/" style="font-size: 10px;">知识图谱</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">归档</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/05/">五月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/04/">四月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="../archives/2022/03/">三月 2022</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">最新文章</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="4a17b156.html">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="6d219808.html">白板推导-L03</a>
-          </li>
-        
-          <li>
-            <a href="">RM视觉自瞄代码上手文档</a>
-          </li>
-        
-          <li>
-            <a href="94101b71.html">阿凡的公众号</a>
-          </li>
-        
-          <li>
-            <a href="be6229dc.html">pyinstaller 处理 opencv-python和 mediapipe时遇到的问题</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2022 undark<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="../index.html" class="mobile-nav-link">Home</a>
-  
-    <a href="../archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="../js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="../fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="../js/script.js"></script>
-
-
-
-
-
-  </div>
-</body>
-</html>
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
