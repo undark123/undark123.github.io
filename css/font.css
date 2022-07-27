@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'font1';
+    font-display: swap;
+    src: url('/medias/font/font1.ttf') format("truetype");
+  }
+@font-face {
+font-family: 'font2';
+font-display: swap;
+src: url('/medias/font/font2.ttf') format("truetype");
+}
+@font-face {
+    font-family: 'fangsong';
+    font-display: swap;
+    src: url('/medias/font/HanYiCuFangSongJian-1.ttf') format("truetype");
+    }
