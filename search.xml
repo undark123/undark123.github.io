@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>欠拟合与过拟合</title>
+      <link href="/posts/efecd754.html"/>
+      <url>/posts/efecd754.html</url>
+      
+        <content type="html"><![CDATA[<p>​ 对于机器学习或是深度学习模型而言，我们不仅要求它对训练数据集有很好的拟合（训练误差），同时也希望其在未知数据集上有更好的拟合效果，也就是泛化能力，所产生的测试误差便成被称为<strong>泛化误差</strong>。</p><p>衡量泛化能力优劣，最为直观的表现是模型的<strong>过拟合</strong>与<strong>欠拟合</strong>（overfitting and underfitting）。过拟合与欠拟合是用于描述模型在训练过程中的两种状态。如下图所示：<img src="https://s2.loli.net/2022/08/02/UKSVFliBayh5GP1.jpg" alt="img"></p><p>如图，一开始模型在学习过程中，处于欠拟合区域。随着训练的进行，训练误差和测试误差都在下降。在到达一个临界点之后，训练集的误差下降，测试集的误差上升了，这个时候进入了过拟合区域——模型对于训练集之外的数据不work。</p><h2 id="欠拟合">欠拟合</h2><h3 id="what">what</h3><p>指的是模型不能在训练集上获得足够低的误差。换句话说，就是模型复杂度低，模型在训练集上的表现就很差，没法学习到数据背后的规律。</p><h3 id="why">why</h3><ol><li>模型复杂度过低</li><li>特征量过少</li></ol><h3 id="how">how</h3><ul><li><p>增加特征数：</p><blockquote><p>可通过挖掘上下文特征、ID类特征、组合特征等新的特征，可以取得较好的效果。这属于特征工程相关的内容，如因子分解机，梯度提升决策树，deep_crossing等都可以丰富特征。</p></blockquote></li><li><p>增加模型复杂度：</p><blockquote><p>模型简单时表达能力差，容易导致欠拟合的问题，因此可以适当增加模型复杂度，使模型拥有更强的拟合能力。</p><p>如在线性模型中添加高次项，神经网络中添加网络层数或者时神经元个数。尝试非线性模型，比如核SVM，决策树，DNN等模型。</p></blockquote></li><li><p>减少正则化系数：</p><blockquote><p>正则化是用来防止过拟合的，但是当出现欠拟合时就应该有针对性的减小正则化系数</p></blockquote></li><li><p>Boosting</p><blockquote><p>Boosting往往会有较小的Bias</p></blockquote></li></ul><h2 id="过拟合">过拟合</h2><h3 id="what-2">what</h3><p>过拟合是指训练误差和测试误差相差较大的情况。换句话说，就是模型的复杂度高于实际问题，模型在训练集上面表现的很好，但是在测试集上却表现的很差。模型未理解数据背后的规律，泛化能力差。</p><h3 id="why-2">why</h3><ol><li>训练数据中噪声干扰过大，使得学习器认为部分噪声是特征从而扰乱学习规则。</li><li>建模样本选取有误，例如训练数据太少，抽样方式错误，样本label错误等，导致样本不能代表整体。</li><li>模型不合理，或假设成立的条件与实际不符。</li><li>特征维数太多，导致模型复杂度太高。</li></ol><h3 id="how-2">how</h3><ul><li><p>数据集增强</p><blockquote><ol><li>获得更多样本数据</li><li>创建“假数据”并添加到训练集中——数据集增强。</li><li>获得额外数据进行交叉验证。</li></ol></blockquote></li><li><p>采用合适模型</p><blockquote><ol><li>降低模型复杂度<ol><li>对于神经网络：减少网络层数、神经元个数、dropout（以排除局部特征的影响）、减小参数</li><li>对于决策树：限制树深，剪枝，限制叶节点数量</li></ol></li><li>特征选择，特征降维</li><li>early stopping</li><li>正则化（限制权重weight-decay）：将权重的大小作为惩罚项加入损失函数（Lasso、Ridge）</li><li>增加噪声（输入、权值、对网路等响应加噪声）</li></ol></blockquote></li><li><p>ensemble</p><blockquote><ul><li>Bagging：从训练集中自助采样，训练多个相互独立的弱学习器，并且通过一定结合策略形成一个强学习器。</li><li>Boosting：初始训练一个基学习器<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>根据表现调整样本分布（预测错误的样本在后续收到更多关注）<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>训练下一个基学习器<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>多个学习器加权结合</li></ul></blockquote></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> ML </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 知识点 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>白板推导-L04</title>
       <link href="/posts/f3450dab.html"/>
       <url>/posts/f3450dab.html</url>
@@ -20,7 +45,7 @@
       
         <tags>
             
-            <tag> 白板推导系列 </tag>
+            <tag> 白板推导 </tag>
             
         </tags>
       
@@ -45,7 +70,7 @@
       
         <tags>
             
-            <tag> 白板推导系列 </tag>
+            <tag> 白板推导 </tag>
             
         </tags>
       
@@ -341,7 +366,7 @@
       
         <tags>
             
-            <tag> 白板推导系列 </tag>
+            <tag> 白板推导 </tag>
             
         </tags>
       
@@ -354,7 +379,7 @@
       <link href="/posts/ee432fb0.html"/>
       <url>/posts/ee432fb0.html</url>
       
-        <content type="html"><![CDATA[<p>朝花夕拾，意在早上掉落的花，傍晚时候捡起。有重拾往事，旧事重提之意。</p><p>借以此文来记录或电影、或诗词、或文章、或音乐、或纪录片、或生活中的片段。</p><blockquote><p>哈哈，我好像把路过我生命的那些人那些事记录下来啊，时不时翻阅回味，好像一切又回到了那时候。</p></blockquote><h2 id="电影">电影</h2><h3 id="随记">随记</h3><ul><li><p><strong>人生总是那么痛苦吗？还是只是小时候是这样？总是如此…——《这个杀手不太冷》</strong></p><blockquote><p>有人用童年治愈一生，有人用一生治愈童年。</p></blockquote></li><li><p><strong>“就像他们说的，人会死两次。一次是我们停止呼吸，另一次是最后一个我们认识的人叫出我们的名字。”——《伙计们，请起立》</strong></p><blockquote><p>一次是生理性死亡，一次是社会性死亡。当世界上已经没人记得时，那便是真正的死去。</p></blockquote></li><li><p><strong>我一面佯装平静，一面把卡片揣进兜里，然而不凑巧的是，我喜欢的围裙上下没有一个兜。——《情书》</strong></p></li><li><p><strong>The problems of your past are your business. The problems of your future are my privilege.——from Dr. John Watson in《Sherlock》</strong></p><blockquote><p>你的过去我来不及参与，你的未来我奉陪到底。——《不负相思意》</p></blockquote></li><li><p><strong>“After all this time?”“Always.”——《Harry Potter》</strong></p><blockquote><p>始终如一？至死不渝！</p><p><a href="https://www.bilibili.com/video/BV1FJ411P7HC?spm_id_from=333.337.search-card.all.click">斯内普片段</a></p><p>他以温柔的叹息唱出了她的守护神。</p></blockquote></li><li><p><strong>那双被砖头磨出老茧的手，那双扒开冒烟残墙的手，那双被严寒冻僵的手，那双捧起漂著死蚊虫的水送向嘴边的手，那双从德国军官手里接过面包果酱的手，再次奏起肖邦那轻柔、美丽的小夜曲–它是音符取代子弹，正义战胜邪恶的宣言。——《钢琴家》</strong></p></li><li><p><strong>“Medicine, law, business, engineering, these are all noble pursuits, and necessary to sustain life. But poetry, beauty, romance, love, these are what we stay alive for.”——《Dead Poets Society》</strong></p></li></ul><blockquote><p>医学、法律、商业、工程，这些都是崇高的追求，是支撑生活的必需条件；但是诗歌、美丽、浪漫、爱情，这些才是我们生活的意义。</p></blockquote><h2 id=""></h2><details open="close">    <summary><h3 style="display: inline-block">电影推荐</h3></summary>  <ol>    <li><a href="">爱乐之城</a> </li>    <li><a href="">绿皮书</a></li>    <li><a href="">白日梦想家</a></li>    <li><a href="">遗忘清单</a></li>    <li><a href="">情书</a></li>    <li><a href="">阿甘正传</a></li>    <li><a href="">卡特教练</a></li>    <li><a href="">闻香识女人</a></li>    <li><a href="">当幸福来敲门</a></li>    <li><a href="">羞耻</a></li>    <li><a href="">海上钢琴师</a></li>    <li><a href="">超脱</a></li>    <li><a href="">这个杀手不太冷</a></li>    <li><a href="">小丑</a></li>    <li><a href="">边缘日记</a></li>    <li><a href="https://www.bilibili.com/bangumi/play/ep272867?theme=movie&spm_id_from=333.337.0.0">钢琴家</a></li>    <li><a href="">海边的曼彻斯特</a></li>    <li><a href="">楚门的世界</a></li>    <li><a href="">大鱼</a></li>    <li><a href="">了不起的盖茨比</a></li>    <li><a href="">肖申克的救赎</a></li>    <li><a href="">放牛班的春天</a></li>    <li><a href="">怦然心动</a></li>    <li><a href="">你好，罗茜</a></li>    <li><a href="">超凡蜘蛛侠2</a></li>    <li><a href="">泰坦尼克号</a></li>    <li><a href="">触不可及</a></li>    <li><a href="">大地惊雷</a></li>    <li><a href="">寻梦环游记</a></li>    <li><a href="">伙伴们，请起立</a></li>    <li><a href="">波西米亚幻想曲</a></li>    <li><a href="">荒野猎人</a></li>    <li><a href="">触不可及</a></li>    <li><a href="">死亡诗社</a></li>  </ol></details><hr><h2 id="书籍">书籍</h2><h3 id="随记-2">随记</h3><ul><li>原来一生一世那么短暂，原来当你发现所爱的，就应该不顾一切的去追求。因为生命随时都会终止，命运是大海，当你能够畅游时，你就要尽情游向你的所爱，因为你不知道狂流什么时候会到来，卷走一切希望与梦想。——《悟空传》</li><li>我相信每个人的心里都有一座城阙。那座城阙里放着他最珍爱的东西。很久以前，当我还不知道该如何去形容这座城阙时，我跟一个人说，这是我的小小江山。那个人容颜清俊，衣衫上盛满朝阳初上的清辉，他温润一笑，问我的小江山中是否有他。——沈筱之《小江山》</li></ul><hr><h2 id="音乐">音乐</h2><h3 id="随记-3">随记</h3><ul><li><p>因为有像你这样的人存在，我对这个世界稍微有了好感。 因为有像你这样的人存在，我对这个世界稍微有了期待。——《曾经我也想过一了百了》</p><blockquote><p>或许让我们可以对世界有好感、有期待的人还在未来，又或许我们一辈子也找不到一个让我们对世界有好感有期待的人，但是不管怎样，我们都要让自己成为自己对世界有好感、有期待的存在。</p><p>所以按照自己想要的方式活着吧，不必活得太过认真，带着属于我们的坚持与倔强，活成自己想要的样子就好，一步一步走向我们所期待的未来。即使身处黑暗，也不要灰心，要相信黎明总会到来。</p></blockquote><blockquote><p><strong>以下为几个版本的链接：</strong></p><p><a href="https://www.bilibili.com/video/BV1b64y1d7pw/?spm_id_from=333.788.recommend_more_video.-1">风雪里的灯火</a>：此时中岛美嘉耳朵出现问题，演唱时需要跺脚来打节拍，有不甘心，有决不放弃之感。</p><p><a href="https://www.bilibili.com/video/BV1V44y1Y783/?spm_id_from=333.788.recommend_more_video.-1">春日中的暖阳</a>：此时她恢复了听力，声音中有着劫后余生的欣喜，有着历经千帆后的轻松，有着刚恢复的小心翼翼。</p><p>两个版本对比下来，犹如置之死地而后生，犹如凤凰涅槃。</p><p><a href="https://www.bilibili.com/video/BV11J411D7ra?spm_id_from=333.337.search-card.all.click">粤语版本</a>：歌词急促且不拘泥于原词，饱含着一种努力去活下去，永不熄灭，永不停歇的情感。</p></blockquote></li></ul><hr><h2 id="纪录片">纪录片</h2><ul><li><p>无数个我终究融合成了我们。——《飞天》</p></li><li><p>”为什么人们不把这些碎片</p><p>全部拼接恢复成它完美的样子？</p><p>因为人们发现在这些无数的疤痕中，</p><p>见到一个又一个历史的细节，</p><p>在这些星辰般的碎片里</p><p>看到了人类在苦难中前进的脚步。</p><p>我们哭着降临世界，</p><p>却可以笑着走向永恒“:cherry_blossom:——《青州佛造像》</p></li><li><p>飞天而降，轻盈与厚重，</p><p>飘逸与力量，定格在一瞬。</p><p>千年过去，盛大的宫殿已化为尘土，</p><p>长安的街巷已成为灰烬，</p><p>风雨已经万变，飞龙神色不改，</p><p>侧耳细听，它的泠泠龙吟</p><p>正是古老文明的深沉回响。:white_flower: ——《鎏金铁心铜龙》</p></li><li><p>那些古人参照自身捏塑出来的形象，</p><p>比他们的制作者拥有更漫长的生命，</p><p>与大地同寿，至今容颜清晰。</p><p>六千年仿佛刹那间，</p><p>村落成了国，符号成了诗，呼唤成了歌。:cherry_blossom:——《人头壶》</p></li></ul><hr><h2 id="其他">其他</h2><h3 id="随记-4">随记</h3><ul><li><p>让过程发生，这就是结果。</p></li><li><p>哲学就是怀着永恒的乡愁寻找家园。——诺瓦利斯</p></li><li></li></ul>]]></content>
+        <content type="html"><![CDATA[<p>朝花夕拾，意在早上掉落的花，傍晚时候捡起。有重拾往事，旧事重提之意。</p><p>借以此文来记录或电影、或诗词、或文章、或音乐、或纪录片、或生活中的片段。</p><p>原本是按照书籍、音乐、纪录片等类别来分的，后面想了想不如直接打乱了来记。</p><blockquote><p>哈哈，我好想把路过我生命的那些人那些事记录下来啊，时不时翻阅回味，好像一切又回到了那时候。</p></blockquote><h2 id="电影">电影</h2><h3 id="随记">随记</h3><ul><li><p><strong>人生总是那么痛苦吗？还是只是小时候是这样？总是如此…——《这个杀手不太冷》</strong></p><blockquote><p>有人用童年治愈一生，有人用一生治愈童年。</p></blockquote></li><li><p><strong>“就像他们说的，人会死两次。一次是我们停止呼吸，另一次是最后一个我们认识的人叫出我们的名字。”——《伙计们，请起立》</strong></p><blockquote><p>一次是生理性死亡，一次是社会性死亡。当世界上已经没人记得时，那便是真正的死去。</p></blockquote></li><li><p><strong>我一面佯装平静，一面把卡片揣进兜里，然而不凑巧的是，我喜欢的围裙上下没有一个兜。——《情书》</strong></p></li><li><p><strong>The problems of your past are your business. The problems of your future are my privilege.——from Dr. John Watson in《Sherlock》</strong></p><blockquote><p>你的过去我来不及参与，你的未来我奉陪到底。——《不负相思意》</p></blockquote></li><li><p><strong>“After all this time?”“Always.”——《Harry Potter》</strong></p><blockquote><p>始终如一？至死不渝！</p><p><a href="https://www.bilibili.com/video/BV1FJ411P7HC?spm_id_from=333.337.search-card.all.click">斯内普片段</a></p><p>他以温柔的叹息唱出了她的守护神。</p></blockquote></li><li><p><strong>那双被砖头磨出老茧的手，那双扒开冒烟残墙的手，那双被严寒冻僵的手，那双捧起漂著死蚊虫的水送向嘴边的手，那双从德国军官手里接过面包果酱的手，再次奏起肖邦那轻柔、美丽的小夜曲–它是音符取代子弹，正义战胜邪恶的宣言。——《钢琴家》</strong></p></li><li><p><strong>“Medicine, law, business, engineering, these are all noble pursuits, and necessary to sustain life. But poetry, beauty, romance, love, these are what we stay alive for.”——《Dead Poets Society》</strong></p></li></ul><blockquote><p>医学、法律、商业、工程，这些都是崇高的追求，是支撑生活的必需条件；但是诗歌、美丽、浪漫、爱情，这些才是我们生活的意义。</p></blockquote><h2 id=""></h2><details open="close">    <summary><h3 style="display: inline-block">电影推荐</h3></summary>  <ol>    <li><a href="">爱乐之城</a> </li>    <li><a href="">绿皮书</a></li>    <li><a href="">白日梦想家</a></li>    <li><a href="">遗忘清单</a></li>    <li><a href="">情书</a></li>    <li><a href="">阿甘正传</a></li>    <li><a href="">卡特教练</a></li>    <li><a href="">闻香识女人</a></li>    <li><a href="">当幸福来敲门</a></li>    <li><a href="">羞耻</a></li>    <li><a href="">海上钢琴师</a></li>    <li><a href="">超脱</a></li>    <li><a href="">这个杀手不太冷</a></li>    <li><a href="">小丑</a></li>    <li><a href="">边缘日记</a></li>    <li><a href="https://www.bilibili.com/bangumi/play/ep272867?theme=movie&spm_id_from=333.337.0.0">钢琴家</a></li>    <li><a href="">海边的曼彻斯特</a></li>    <li><a href="">楚门的世界</a></li>    <li><a href="">大鱼</a></li>    <li><a href="">了不起的盖茨比</a></li>    <li><a href="">肖申克的救赎</a></li>    <li><a href="">放牛班的春天</a></li>    <li><a href="">怦然心动</a></li>    <li><a href="">你好，罗茜</a></li>    <li><a href="">超凡蜘蛛侠2</a></li>    <li><a href="">泰坦尼克号</a></li>    <li><a href="">触不可及</a></li>    <li><a href="">大地惊雷</a></li>    <li><a href="">寻梦环游记</a></li>    <li><a href="">伙伴们，请起立</a></li>    <li><a href="">波西米亚幻想曲</a></li>    <li><a href="">荒野猎人</a></li>    <li><a href="">触不可及</a></li>    <li><a href="">死亡诗社</a></li>  </ol></details><hr><h2 id="书籍">书籍</h2><h3 id="随记-2">随记</h3><ul><li>原来一生一世那么短暂，原来当你发现所爱的，就应该不顾一切的去追求。因为生命随时都会终止，命运是大海，当你能够畅游时，你就要尽情游向你的所爱，因为你不知道狂流什么时候会到来，卷走一切希望与梦想。——《悟空传》</li><li>我相信每个人的心里都有一座城阙。那座城阙里放着他最珍爱的东西。很久以前，当我还不知道该如何去形容这座城阙时，我跟一个人说，这是我的小小江山。那个人容颜清俊，衣衫上盛满朝阳初上的清辉，他温润一笑，问我的小江山中是否有他。——沈筱之《小江山》</li></ul><hr><h2 id="音乐">音乐</h2><h3 id="随记-3">随记</h3><ul><li><p>因为有像你这样的人存在，我对这个世界稍微有了好感。 因为有像你这样的人存在，我对这个世界稍微有了期待。——《曾经我也想过一了百了》</p><blockquote><p>或许让我们可以对世界有好感、有期待的人还在未来，又或许我们一辈子也找不到一个让我们对世界有好感有期待的人，但是不管怎样，我们都要让自己成为自己对世界有好感、有期待的存在。</p><p>所以按照自己想要的方式活着吧，不必活得太过认真，带着属于我们的坚持与倔强，活成自己想要的样子就好，一步一步走向我们所期待的未来。即使身处黑暗，也不要灰心，要相信黎明总会到来。</p></blockquote><blockquote><p><strong>以下为几个版本的链接：</strong></p><p><a href="https://www.bilibili.com/video/BV1b64y1d7pw/?spm_id_from=333.788.recommend_more_video.-1">风雪里的灯火</a>：此时中岛美嘉耳朵出现问题，演唱时需要跺脚来打节拍，有不甘心，有决不放弃之感。</p><p><a href="https://www.bilibili.com/video/BV1V44y1Y783/?spm_id_from=333.788.recommend_more_video.-1">春日中的暖阳</a>：此时她恢复了听力，声音中有着劫后余生的欣喜，有着历经千帆后的轻松，有着刚恢复的小心翼翼。</p><p>两个版本对比下来，犹如置之死地而后生，犹如凤凰涅槃。</p><p><a href="https://www.bilibili.com/video/BV11J411D7ra?spm_id_from=333.337.search-card.all.click">粤语版本</a>：歌词急促且不拘泥于原词，饱含着一种努力去活下去，永不熄灭，永不停歇的情感。</p></blockquote></li></ul><hr><h2 id="纪录片">纪录片</h2><ul><li><p>无数个我终究融合成了我们。——《飞天》</p></li><li><p>”为什么人们不把这些碎片</p><p>全部拼接恢复成它完美的样子？</p><p>因为人们发现在这些无数的疤痕中，</p><p>见到一个又一个历史的细节，</p><p>在这些星辰般的碎片里</p><p>看到了人类在苦难中前进的脚步。</p><p>我们哭着降临世界，</p><p>却可以笑着走向永恒“:cherry_blossom:——《青州佛造像》</p></li><li><p>飞天而降，轻盈与厚重，</p><p>飘逸与力量，定格在一瞬。</p><p>千年过去，盛大的宫殿已化为尘土，</p><p>长安的街巷已成为灰烬，</p><p>风雨已经万变，飞龙神色不改，</p><p>侧耳细听，它的泠泠龙吟</p><p>正是古老文明的深沉回响。:white_flower: ——《鎏金铁心铜龙》</p></li><li><p>那些古人参照自身捏塑出来的形象，</p><p>比他们的制作者拥有更漫长的生命，</p><p>与大地同寿，至今容颜清晰。</p><p>六千年仿佛刹那间，</p><p>村落成了国，符号成了诗，呼唤成了歌。:cherry_blossom:——《人头壶》</p></li></ul><hr><h2 id="其他">其他</h2><ul><li><p>让过程发生，这就是结果。</p></li><li><p>哲学就是怀着永恒的乡愁寻找家园。——诺瓦利斯</p></li><li><p>明确的爱，直接的厌恶，真诚的喜欢，站在太阳下的坦荡。还有被坚定的选择！</p></li><li><p>有人可爱，有梦可待。</p></li><li><p>一月你还没有出现</p><p>二月你睡在隔壁</p><p>三月下起了大雨</p><p>四月遍地蔷薇</p><p>五月我们对面坐着，犹如梦中</p><p>就这样六月到了</p><p>六月里青草盛开 处处芬芳</p><p>直到天涯</p><p>八月就算八月</p><p>八月我守口如瓶 八月里我是瓶中的水</p><p>你是青天的云</p><p>九月和十月 是两只眼睛 装满了大海</p><p>你在海上 我在海下</p><p>十一月尚未到来</p><p>透过它的窗口 我望见了十二月</p><p>十二月大雾弥漫——《过程》林白</p></li><li></li></ul>]]></content>
       
       
       <categories>
@@ -435,7 +460,7 @@
       
         <tags>
             
-            <tag> 白板推导系列 </tag>
+            <tag> 白板推导 </tag>
             
         </tags>
       
