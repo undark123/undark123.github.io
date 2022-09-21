@@ -1,0 +1,319 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>CNN基础及经典模型介绍 | Sunshine 616</title><meta name="keywords" content="tutorial"><meta name="author" content="undark"><meta name="copyright" content="undark"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="CNN基础及经典模型介绍">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CNN基础及经典模型介绍">
+<meta property="og:url" content="https://undark123.github.io/posts/2d8b5465.html">
+<meta property="og:site_name" content="Sunshine 616">
+<meta property="og:description" content="CNN基础及经典模型介绍">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/08/10/YphL62iXOBrSP3Q.jpg">
+<meta property="article:published_time" content="2022-08-10T09:13:28.000Z">
+<meta property="article:modified_time" content="2022-09-21T16:17:43.947Z">
+<meta property="article:author" content="undark">
+<meta property="article:tag" content="tutorial">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/08/10/YphL62iXOBrSP3Q.jpg"><link rel="shortcut icon" href="../medias/logo.png"><link rel="canonical" href="https://undark123.github.io/posts/2d8b5465"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="../css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="../css/font.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CNN基础及经典模型介绍',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-09-22 00:17:43'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/font.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiperstyle.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/medias/avatar/avatar1.jpg" onerror="onerror=null;src='/medias/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="archives/"><div class="headline">文章</div><div class="length-num">25</div></a><a href="tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="index.html"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2022/08/10/YphL62iXOBrSP3Q.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="index.html">Sunshine 616</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="index.html"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">CNN基础及经典模型介绍</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-08-10T09:13:28.000Z" title="发表于 2022-08-10 17:13:28">2022-08-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-09-21T16:17:43.947Z" title="更新于 2022-09-22 00:17:43">2022-09-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="../categories/RM/">RM</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="CNN基础及经典模型介绍"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="top-img gist" style="background-image: url(https://s2.loli.net/2022/08/10/YphL62iXOBrSP3Q.jpg)"></div><article class="post-content" id="article-container"><h1>CNN基础及经典模型介绍</h1>
+<p>CNN在网络上的教程数不胜数，本文仅进行CNN入门内容介绍，具体内容推荐如下学习链接：</p>
+<ul>
+<li>同学的公众号：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ifPbEBUWxU_SqsoKsI7zPQ">DominicYoung0118</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV12b4y1X7Wv?spm_id_from=333.1007.top_right_bar_window_view_later.content.click">【数之道 05】走进神经网络模型、机器学习的世界</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Jy4y187Ez/?spm_id_from=333.788&amp;vd_source=bf17ffa89cf3d5c8172c022049de7ef5">【数之道 06】神经网络模型中激活函数的选择_</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1hE411t7RN?spm_id_from=333.788.top_right_bar_window_custom_collection.content.click">【小土堆】PyTorch深度学习快速入门教程</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1bx411M7Zx?spm_id_from=333.999.0.0&amp;vd_source=bf17ffa89cf3d5c8172c022049de7ef5">【3Blue1Brown】深度学习之神经网络的结构 Part 1 ver 2.0_</a></li>
+<li>B站关注：<strong>跟李沐学AI</strong>、<strong>同济子豪兄</strong>、<strong>3Blue1Brown</strong>、<strong>FunInCode</strong>等一众优秀的UP主。</li>
+</ul>
+<h2 id="简介">简介</h2>
+<p>​		卷积神经网络（Convolutional Neural Networks，简称CNN）提出于20世纪60年代，由Hubel和Wiesel在研究猫脑皮层中用于局部敏感和方向选择的神经元时发现。</p>
+<p>​		CNN是目前深度学习最大的一个流派，其应用优点在于避免了对图像的复杂前期预处理，可以直接处理原始图像。CNN核心在于“卷积”，传统机器学习中LBP、HOG等特征都可以看作是卷积的一种特殊形式，“卷积”以不同的参数来描述不同的抽象程度特征，更接近于原始图像的“特征抽象”。</p>
+<h2 id="动机">动机</h2>
+<p>CNN的经典用例是执行图像分类，例如查看宠物的图像并确定它是猫还是狗。这是一项看似简单的任务 – 为什么不使用普通的神经网络呢？</p>
+<p><strong>原因1：图像很大</strong><br>
+现在用于计算机视觉问题的图像通常是224×224或更大。想象一下，构建一个神经网络来处理224×224彩色图像:包括图像中的3个彩色通道(RGB)，得到224×224×3 = 150,528个输入特征!在这样的网络中，一个典型的隐含层可能有1024个节点，因此我们必须为第一层单独训练150,528 x 1024 = 1.5 +亿个权重。我们的网络将是巨大的，几乎不可能训练。</p>
+<p>我们也不需要那么多砝码。图像的好处是，我们知道像素在相邻的上下文中最有用。图像中的物体是由小的局部特征组成的，比如眼睛的圆形虹膜或一张纸的方角。第一个隐藏层中的每个节点都要查看每个像素，这不是很浪费时间吗?</p>
+<p><strong>原因2：Position可以改变</strong><br>
+如果你训练一个网络来检测狗，你希望它能够检测狗，不管它出现在图像的什么地方。想象一下，训练一个网络，它能很好地处理特定的狗的图像，然后给它喂食同一图像的一个稍微移动的版本。狗不会激活相同的神经元，所以网络的反应会完全不同!</p>
+<h2 id="基础知识">基础知识</h2>
+<ol>
+<li><strong>卷积（Convolution）</strong></li>
+</ol>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/11/spFxYqML3cO8rj7.png" alt="image-20220810163742715" style="zoom:67%;" />
+<p>以数字辨识为例，可以在上图中看到，图中黑色色块中的白色数字为4，假设白色区域（即数字4对应部分）的值为1，而与之相邻的黑色色块的值为0，那么我们便能得到色块不同区域对应的值，将其用表格的形式进行展示，如下图所示：</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/11/DvphzcPMfiXnrW6.png" alt="image-20220810163835320" style="zoom: 67%;" />
+<blockquote>
+<p>假设色块可以用8*8的像素表示，像素值为0（白色）或1（黑色）</p>
+</blockquote>
+<p>单次的卷积运算，即为左边红色框内的数字与卷积核（kernel）/过滤器（filter）中对应位置的数字相乘再求和，其结果为右边红色框内示出的值（0）。可以看到，框的大小，即卷积核的大小是人为设定的，直观地，可以将卷积核的大小与“时间分辨率”类比，卷积核越大，分辨率越低。</p>
+<p>然后，将红色框向右移动一个单位（即滑动步长stride=1），再次进行卷积运算，这个过程如下图所示：</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/11/CLa9uUe57no1dIl.png" alt="image-20220810164004050" style="zoom:67%;" />
+<p>然后不断重复以上过程（向右移动到末端之后，回到起始位置，再向下移动同样的stride，再重复以上过程即可），可以得到最终结果：</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/11/MLkryjecXYv1HTB.png" alt="image-20220810164021337" style="zoom:67%;" />
+<p>例如，下图中左边红色框内数字与卷积核所做卷积运算所得结果为右边红色框内的3，图中给出了在步长stride=1的情况下，卷积运算所得新的表格的边长的计算公式（其中f即为filter边长）。另外，过滤器和卷积核在CNN中是一个意思，以下统一用卷积核来表述。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/11/neoqyatCFAQsl8k.png" alt="image-20220810164132436" style="zoom:67%;" />
+<ol start="2">
+<li><strong>填充（Padding）</strong></li>
+</ol>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/11/f4jWpDxPTnLlwyd.png" alt="image-20220810164206528" style="zoom:67%;" />
+<p>由以上卷积过程可以看到，卷积运算可能导致“表格”（以下表述为“图像”）减小，有些情况下可能不期望出现这种情况，这时会采用填充（padding）的方式来处理，填充其实就是进行卷积前的一些预处理。但在CNN中padding也可能指代这种特殊类型的卷积运算。</p>
+<p>由上图可以看到，为了使得大小为6<em>6的图像（N2）经卷积运算后大小不变，可以事先填充，将其变为8</em>8的图像（这里用0填充），经过卷积运算可以得到6*6的图像（N3）。称这种图像经卷积运算后大小不变的填充方式为same（在许多CNN的模型如VGG-16中都会用到same方式的卷积运算）。</p>
+<ol start="3">
+<li><strong>池化（Pooling）</strong></li>
+</ol>
+<p>在卷积运算之后，经常进行池化处理（但这不是必须的）以进一步减少运算量，如下图所示，选择3*3的区域（红色框），最大池化即为从中选取最大值（这里是2）。</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/11/CErzvNR6kVh5B8L.png" alt="image-20220810164236459" style="zoom: 67%;" />
+<p>步长stride=3（图中用s表示），因此可以得到四个池化后的值。平均池化与最大池化类似，区别仅在于计算红色框内数值的平均值，最大池化与平均池化的最终结果如下图所示：</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/11/JSQK7TO9pyIokrU.png" alt="image-20220810164300493" style="zoom:67%;" />
+<p>可以看出，此时依旧是对应位置的数字相乘然后再求和。</p>
+<p>一般用立方体的形式表示以上过程，且往往卷积核数目为多个，如下图所示：</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/11/oyTAspcnFBdEeV4.png" alt="image-20220810164313424" style="zoom:67%;" />
+<p>以上便是卷积神经网络所特有的步骤，再经过多次卷积、池化之后，数据将被输入全连接神经网络（Fully connected neural network，FC）中，输出最终结果。以二分类问题为例，下图展示了CNN所涉及的主要环节：</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/11/nuRepkzml2WgMYV.png" alt="image-20220810164340372" style="zoom:67%;" />
+<ol start="4">
+<li><strong>卷积运算与FC的关系</strong></li>
+</ol>
+<p>实际上，卷积运算相当于FC中的隐藏层所做的运算（为便于介绍主要原理，以下忽略了激活函数部分的运算过程），大小为3*3的图像与2*2的卷积核进行卷积，步长为1，卷积过程等效为以下四个图所反映的过程：</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/11/avoY7I6WFNHdXAp.png" alt="image-20220810164414667" style="zoom:67%;" />
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/11/DArGOu47pbkJzTx.png" alt="image-20220810164507905" style="zoom:67%;" />
+<p>可以看到，卷积核中的参数相当于神经元中进行线性运算的权重，且图中隐藏层中的各个神经元都采用这些权重（即“权值共享”），且对于每个神经元来说，仅需计算部分的输入数据，这体现出“稀疏连接”的特点（相较于全连接FC）。</p>
+<h2 id="经典CNN模型：">经典CNN模型：</h2>
+<ol>
+<li>
+<p>LeNet-5</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/11/rbZ3iejMC81Jlzx.png" alt="image-20220810165134624" style="zoom:67%;" />
+</li>
+<li>
+<p>AlexNet</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/11/kv13f9zBwQaqEAM.png" alt="image-20220810165208329" style="zoom:67%;" />
+</li>
+<li>
+<p>VGG-16</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/11/kzl1CPDYWEvgABM.png" alt="image-20220810165230260" style="zoom:67%;" />
+<ol start="4">
+<li>
+<p>ResNet</p>
+<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/11/3tVxMOZb6iAe5Xv.png" alt="image-20220810165249893" style="zoom: 67%;" />
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="MNIST手写数字实战">MNIST手写数字实战</h2>
+<p>该部分源于同学的公众号，<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ifPbEBUWxU_SqsoKsI7zPQ">最详细的MNIST手写数字识别教程——LeNet</a></p>
+<p>B站视频推荐：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1WT4y177SA?spm_id_from=333.337.search-card.all.click&amp;vd_source=bf17ffa89cf3d5c8172c022049de7ef5">03-2 轻松学 PyTorch 手写字体识别 MNIST ( 实战 - 上 )_</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://undark123.github.io">undark</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://undark123.github.io/posts/2d8b5465.html">https://undark123.github.io/posts/2d8b5465.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://undark123.github.io" target="_blank">Sunshine 616</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="../tags/tutorial/">tutorial</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2022/08/10/YphL62iXOBrSP3Q.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="../medias/reward/wechat.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="../medias/reward/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="../medias/reward/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="../medias/reward/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="9c1b1a4d.html"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/10/XQrClLHmhBxaAW8.jpg" onerror="onerror=null;src='../medias/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Linux教程</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="eb31d486.html" title="RM视觉自瞄代码上手文档"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/07/27/nP2QjTkD1xwm5ZS.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-28</div><div class="title">RM视觉自瞄代码上手文档</div></div></a></div><div><a href="9c1b1a4d.html" title="Linux教程"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/10/XQrClLHmhBxaAW8.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-10</div><div class="title">Linux教程</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/medias/avatar/avatar1.jpg" onerror="this.onerror=null;this.src='/medias/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">undark</div><div class="author-info__description">rm -rf /</div></div><div class="card-info-data site-data is-center"><a href="archives/"><div class="headline">文章</div><div class="length-num">25</div></a><a href="tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://gitee.com/undark/"><i class="fab fa-github"></i><span>Gitee</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/undark123" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2820130752&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&amp;email=wangjh415@163.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">纵然是深沉的黑夜，也遮不住一丝光亮</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">CNN基础及经典模型介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%9C%BA"><span class="toc-text">动机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%8F%E5%85%B8CNN%E6%A8%A1%E5%9E%8B%EF%BC%9A"><span class="toc-text">经典CNN模型：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MNIST%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E5%AE%9E%E6%88%98"><span class="toc-text">MNIST手写数字实战</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="posts/2d8b5465.html" title="CNN基础及经典模型介绍"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/10/YphL62iXOBrSP3Q.jpg" onerror="this.onerror=null;this.src='/medias/404.jpg'" alt="CNN基础及经典模型介绍"/></a><div class="content"><a class="title" href="posts/2d8b5465.html" title="CNN基础及经典模型介绍">CNN基础及经典模型介绍</a><time datetime="2022-08-10T09:13:28.000Z" title="发表于 2022-08-10 17:13:28">2022-08-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="posts/9c1b1a4d.html" title="Linux教程"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/10/XQrClLHmhBxaAW8.jpg" onerror="this.onerror=null;this.src='/medias/404.jpg'" alt="Linux教程"/></a><div class="content"><a class="title" href="posts/9c1b1a4d.html" title="Linux教程">Linux教程</a><time datetime="2022-08-10T08:12:13.000Z" title="发表于 2022-08-10 16:12:13">2022-08-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="posts/efecd754.html" title="欠拟合与过拟合"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/02/4q8JywDjKxeCuN6.jpg" onerror="this.onerror=null;this.src='/medias/404.jpg'" alt="欠拟合与过拟合"/></a><div class="content"><a class="title" href="posts/efecd754.html" title="欠拟合与过拟合">欠拟合与过拟合</a><time datetime="2022-08-02T02:23:39.000Z" title="发表于 2022-08-02 10:23:39">2022-08-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="posts/f3450dab.html" title="白板推导-L04"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/07/27/JhREwcGjM2vtzqm.webp" onerror="this.onerror=null;this.src='/medias/404.jpg'" alt="白板推导-L04"/></a><div class="content"><a class="title" href="posts/f3450dab.html" title="白板推导-L04">白板推导-L04</a><time datetime="2022-07-09T00:21:03.000Z" title="发表于 2022-07-09 08:21:03">2022-07-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="posts/6d219808.html" title="白板推导-L03"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/07/27/JhREwcGjM2vtzqm.webp" onerror="this.onerror=null;this.src='/medias/404.jpg'" alt="白板推导-L03"/></a><div class="content"><a class="title" href="posts/6d219808.html" title="白板推导-L03">白板推导-L03</a><time datetime="2022-06-28T09:41:18.000Z" title="发表于 2022-06-28 17:41:18">2022-06-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 <i style="color:#FF6A6A;animation: announ_animation 0.8s linear infinite;" class="fa fa-heartbeat"></i> undark</div><div class="framework-info"></div><div class="footer_custom_text">无关青云路，无关诗书；无你处，无江湖。</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="../js/utils.js"></script><script src="../js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="../js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'Gw9oXBGgOShHNp7Yo8scDLgE-gzGzoHsz',
+      appKey: 'bLFEAINzYwSW97NOQenf2VJF',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="囚牛,睚眦,嘲风,蒲牢,狻猊,霸下,狴犴,负屃,螭吻" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementById('recent-posts');
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/ee432fb0.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/07/27/QfgathFNDG7AiU4.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-04-20</span><a class="blog-slider__title" href="posts/ee432fb0.html" alt="">朝花夕拾</a><div class="blog-slider__text">朝花夕拾，意在早上掉落的花，傍晚时候捡起。</div><a class="blog-slider__button" href="posts/ee432fb0.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/5a717bf0.html" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/07/27/FbyBIl25QcXiDsH.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-03-28</span><a class="blog-slider__title" href="posts/5a717bf0.html" alt="">更新日志</a><div class="blog-slider__text">博客的更新日志。</div><a class="blog-slider__button" href="posts/5a717bf0.html" alt="">详情   </a></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'undefined'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.js"></script><script defer data-pjax src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper_init.js"></script><!-- hexo injector body_end end --></body></html>
